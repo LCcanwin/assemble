@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+    <mapper namespace="com.jijian.assemble.mapper.UserMapper">
+    <select id="selectUser" resultType="com.jijian.assemble.entity.User">
+        SELECT user_name as userName ,pass_word as passWord,tell_phone as tellPhone FROM userinfo
+    </select>
+
+</mapper>
+    
