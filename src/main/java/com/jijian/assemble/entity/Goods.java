@@ -29,9 +29,9 @@ public class Goods extends BaseEntity {
     @Column(name = "discount",type = MySqlTypeConstant.DOUBLE,length = 64)
     private double discount;
 
-    @Column(name = "businesId",type = MySqlTypeConstant.INT,length = 11)
-    private int busines_id;
+    @Column(name = "busines_id",type = MySqlTypeConstant.INT,length = 11)
+    private int businesId;
 
-    @Column(name = "goodsNumber",type = MySqlTypeConstant.INT,length = 11)
-    private int goods_number;
+    @Column(name = "goods_number",type = MySqlTypeConstant.INT,length = 11)
+    private int goodsNumber;
 }

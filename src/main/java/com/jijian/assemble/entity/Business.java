@@ -38,7 +38,7 @@ public class Business extends BaseEntity {
     @Column(name = "license",type = MySqlTypeConstant.VARCHAR,length = 64)
     private String license;
 
-    @Column(name = "realName",type = MySqlTypeConstant.VARCHAR,length = 64)
+    @Column(name = "real_name",type = MySqlTypeConstant.VARCHAR,length = 64)
     private String realName;
 
 }
