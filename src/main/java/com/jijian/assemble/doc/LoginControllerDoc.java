@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 @Api(tags = "登陆、注册功能")
 public interface LoginControllerDoc {
     @ApiOperation("获取验证码")
-    ResultJson<String> getVerifyCode(@ApiParam(value = "phone", required = true) String phone);
+    ResultJson<Boolean> getVerifyCode(@ApiParam(value = "phone", required = true) String phone,HttpServletRequest request);
 
     @ApiOperation("登陆功能")
     ResultJson<UserInfoDTO> login(@ApiParam(value = "phone", required = true) String phone, @ApiParam(value = "code", required = false) String code, @ApiParam(value = "password", required = false) String password,
