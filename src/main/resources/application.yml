@@ -43,7 +43,7 @@ mybatis:
   # 配置自动建表功能
   mapper-locations: classpath*:xxxxxx/*.xml,classpath*:com/gitee/sunchenbin/mybatis/actable/mapping/*/*.xml,classpath:mapper/**/*.xml
   model:
-    pack: com.jijian.assemble.entity
+    pack: com.jijian
   table:
     auto: update
 #pagehelper分页插件

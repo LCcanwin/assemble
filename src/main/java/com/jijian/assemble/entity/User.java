@@ -4,7 +4,7 @@ import com.gitee.sunchenbin.mybatis.actable.annotation.Column;
 import com.gitee.sunchenbin.mybatis.actable.annotation.Table;
 import com.gitee.sunchenbin.mybatis.actable.constants.MySqlTypeConstant;
 
-import com.jijian.assemble.base.BaseEntity;
+import com.jijian.base.BaseEntity;
 import lombok.Data;
 
 

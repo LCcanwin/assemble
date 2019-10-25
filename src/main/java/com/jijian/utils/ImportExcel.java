@@ -1,4 +1,4 @@
-package com.jijian.assemble.utils;
+package com.jijian.utils;
 
 import org.apache.poi.POIXMLDocument;
 import org.apache.poi.hssf.usermodel.HSSFCell;

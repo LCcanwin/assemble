@@ -1,11 +1,9 @@
 package com.jijian.assemble.service.impl;
 
 import com.jijian.assemble.service.LoginService;
-import com.jijian.assemble.utils.HttpClientUtil;
-import com.jijian.assemble.utils.SendMessage;
+import com.jijian.utils.HttpClientUtil;
+import com.jijian.utils.SendMessage;
 import org.springframework.stereotype.Service;
-
-import javax.servlet.http.HttpSession;
 
 /**
  * @Description todo

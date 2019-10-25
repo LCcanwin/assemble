@@ -1,4 +1,4 @@
-package com.jijian.assemble.utils;
+package com.jijian.utils;
 
 import java.io.IOException;
 import java.net.URL;

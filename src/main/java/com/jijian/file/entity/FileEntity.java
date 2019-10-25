@@ -1,14 +1,21 @@
-package com.jijian.assemble.entity;
+package com.jijian.file.entity;
 
 import com.gitee.sunchenbin.mybatis.actable.annotation.Column;
+import com.gitee.sunchenbin.mybatis.actable.annotation.Table;
 import com.gitee.sunchenbin.mybatis.actable.constants.MySqlTypeConstant;
-import com.jijian.assemble.base.BaseEntity;
+import com.jijian.base.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Author: chenchuan
+ * Date: 2019/10/25 11:04
+ * Content: 文件公共上传类
+ */
 @Getter
 @Setter
-public class File extends BaseEntity {
+@Table(name = "file")
+public class FileEntity extends BaseEntity {
     /**
      * 原文件名
      * **/
@@ -29,5 +36,14 @@ public class File extends BaseEntity {
      * **/
     @Column(name = "u_id",type = MySqlTypeConstant.VARCHAR,length = 64)
     private String   uId;
-
+    /***
+     * 文件类型
+     * */
+    @Column(name = "file_type", type = MySqlTypeConstant.VARCHAR)
+    private String fileType;
+    /**
+     * 文件路径
+     */
+    @Column(name = "file_url", type = MySqlTypeConstant.VARCHAR)
+    private String fileUrl;
 }

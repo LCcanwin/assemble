@@ -1,6 +1,6 @@
 package com.jijian.assemble.doc;
 
-import com.jijian.assemble.common.ResultJson;
+import com.jijian.common.ResultJson;
 import com.jijian.assemble.dto.UserInfoDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

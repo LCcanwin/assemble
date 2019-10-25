@@ -1,20 +1,23 @@
-package com.jijian.assemble.base;
+package com.jijian.base;
 
 
 import com.gitee.sunchenbin.mybatis.actable.annotation.Column;
 import com.gitee.sunchenbin.mybatis.actable.command.BaseModel;
 import com.gitee.sunchenbin.mybatis.actable.constants.MySqlTypeConstant;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
-
+@Setter
+@Getter
 public class BaseEntity extends BaseModel implements Serializable {
 
     @Id
-    @Column(name = "id", type = MySqlTypeConstant.VARCHAR, isKey = true, length = 64)
+    @Column(name = "id", type = MySqlTypeConstant.INT, isKey = true, length = 64)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected String id;
 
@@ -47,52 +50,4 @@ public class BaseEntity extends BaseModel implements Serializable {
      */
     @Column(name = "deleted", type = MySqlTypeConstant.INT, isNull = false, length = 1)
     protected Boolean deleted;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    public String getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
-    }
-
-    public String getUpdateUser() {
-        return updateUser;
-    }
-
-    public void setUpdateUser(String updateUser) {
-        this.updateUser = updateUser;
-    }
-
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
 }

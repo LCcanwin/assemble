@@ -1,12 +1,10 @@
 package com.jijian.assemble.controller;
 
-import com.jijian.assemble.common.Constant;
-import com.jijian.assemble.common.ResultJson;
+import com.jijian.common.Constant;
+import com.jijian.common.ResultJson;
 import com.jijian.assemble.doc.LoginControllerDoc;
 import com.jijian.assemble.dto.UserInfoDTO;
 import com.jijian.assemble.service.LoginService;
-import com.jijian.assemble.utils.HttpClientUtil;
-import com.jijian.assemble.utils.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

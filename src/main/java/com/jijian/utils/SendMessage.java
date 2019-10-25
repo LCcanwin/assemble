@@ -1,4 +1,4 @@
-package com.jijian.assemble.utils;
+package com.jijian.utils;
 public class SendMessage {
      //用户名
     public static String Uid = "qupz";

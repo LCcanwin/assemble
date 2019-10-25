@@ -1,4 +1,4 @@
-package com.jijian.assemble.utils;
+package com.jijian.utils;
 /**
 @author chenchuan
 @version 创建时间：2019年4月29日下午4:50:17

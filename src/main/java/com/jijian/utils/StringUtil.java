@@ -1,4 +1,4 @@
-package com.jijian.assemble.utils;
+package com.jijian.utils;
 
 import java.util.ArrayList;
 import java.util.HashSet;

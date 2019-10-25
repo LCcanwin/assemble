@@ -1,4 +1,4 @@
-package com.jijian.assemble.common;
+package com.jijian.common;
 
 import org.springframework.http.HttpStatus;
 
