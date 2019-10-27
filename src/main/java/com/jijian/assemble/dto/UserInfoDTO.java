@@ -16,7 +16,7 @@ import java.io.Serializable;
 public class UserInfoDTO implements Serializable {
 
     @ApiModelProperty("商家id")
-    private Long userId;
+    private Integer userId;
 
     @ApiModelProperty("商家姓名")
     private String userName;
@@ -25,7 +25,7 @@ public class UserInfoDTO implements Serializable {
     private String userNumber;
 
     @ApiModelProperty("商家生成的token")
-    private String Token;
+    private String token;
 
 
 }

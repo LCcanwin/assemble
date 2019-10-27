@@ -22,6 +22,8 @@ public class User extends BaseEntity {
     private String tellPhone;
     @Column(name = "user_img",type = MySqlTypeConstant.VARCHAR,length = 64)
     private String userImg;
+    @Column(name = "token",type = MySqlTypeConstant.VARCHAR,length = 255)
+    private String Token;
     @Column(name = "sex",type = MySqlTypeConstant.INT,length = 1)
     private int sex;
 

@@ -1,9 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
     <mapper namespace="com.jijian.assemble.mapper.UserMapper">
+    <resultMap id="userInfo" type="com.jijian.assemble.dto.UserInfoDTO" >
+        <id column="id" property="userId" javaType="int"/>
+        <result column="user_name" property="userName" javaType="String"/>
+        <result column="user_number" property="userNumber" javaType="String"/>
+        <result column="token" property="token" javaType="String"/>
+    </resultMap>
     <select id="selectUser" resultType="com.jijian.assemble.entity.User">
         SELECT user_name as userName ,pass_word as passWord,tell_phone as tellPhone FROM userinfo
     </select>
-
+    <update id="makeToken" parameterType="string">
+     update user_info set token=#{token}
+     where tell_phone=#{phone}
+    </update>
+    <insert id="register" parameterType="string">
+        insert into user_info(user_name,user_number,pass_word,tell_phone,create_date,update_date) values
+        (#{phone},#{phone},#{password},
+			#{phone},now(),now())
+    </insert>
+    <select id="getUserInfo" parameterType="string" resultMap="userInfo">
+        select id,user_name,user_number,token from user_info where tell_phone=#{phone}
+    </select>
+    <select id="getPassword" resultType="string" parameterType="string">
+        select pass_word from user_info where tell_phone=#{phone}
+    </select>
+    <select id="userCount" parameterType="string" resultType="int">
+        select COUNT(*) from user_info where tell_phone=#{phone} and deleted=1
+    </select>
 </mapper>
     

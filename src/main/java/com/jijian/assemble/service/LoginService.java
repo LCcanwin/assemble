@@ -1,5 +1,7 @@
 package com.jijian.assemble.service;
 
+import com.jijian.assemble.dto.UserInfoDTO;
+
 /**
  * @Description todo
  * @Author luochao
@@ -7,4 +9,8 @@ package com.jijian.assemble.service;
  */
 public interface LoginService {
     Integer getVerifyCode(String phone,Integer code);
+    UserInfoDTO register(String phone, String password);
+    UserInfoDTO loginByCode(String phone);
+    UserInfoDTO loginByPassword(String phone, String password);
+    Boolean isRegister(String phone);
 }
