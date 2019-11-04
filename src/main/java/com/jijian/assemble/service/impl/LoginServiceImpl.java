@@ -3,10 +3,10 @@ package com.jijian.assemble.service.impl;
 import com.jijian.assemble.dto.UserInfoDTO;
 import com.jijian.assemble.mapper.UserMapper;
 import com.jijian.assemble.service.LoginService;
-import com.jijian.assemble.utils.HttpClientUtil;
 import com.jijian.assemble.utils.MD5Util;
-import com.jijian.assemble.utils.SendMessage;
 import com.jijian.assemble.utils.TokenUtil;
+import com.jijian.utils.HttpClientUtil;
+import com.jijian.utils.SendMessage;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
