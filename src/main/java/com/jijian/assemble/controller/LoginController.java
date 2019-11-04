@@ -28,14 +28,14 @@ public class LoginController implements LoginControllerDoc {
 
     @RequestMapping(value = "/getVerifyCode", method = RequestMethod.GET)
     public ResultJson<Boolean> getVerifyCode(@RequestParam(value = "phone", required = true) String phone, HttpServletRequest request) {
-        int verifyCode = (int)((Math.random()*9+1)*100000);
+        int verifyCode = (int) ((Math.random() * 9 + 1) * 100000);
         HttpSession session = request.getSession();
-        session.setAttribute(Constant.VERIFY_CODE,verifyCode);
-        int result = loginService.getVerifyCode(phone,verifyCode);
-        if (result>0) {
+        session.setAttribute(Constant.VERIFY_CODE, verifyCode);
+        int result = loginService.getVerifyCode(phone, verifyCode);
+        if (result > 0) {
             return ResultJson.getReturnJson("验证码发送成功！", true);
-        }else {
-            return ResultJson.getReturnJson("验证码发送失败！",false);
+        } else {
+            return ResultJson.getReturnJson("验证码发送失败！", false);
         }
 
     }
@@ -44,13 +44,39 @@ public class LoginController implements LoginControllerDoc {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ResultJson<UserInfoDTO> login(@RequestParam(value = "phone", required = true) String phone, @RequestParam(value = "code", required = false) String code, @RequestParam(value = "password", required = false) String password,
                                          @RequestParam(value = "loginType") Integer loginType, HttpServletRequest request) {
-        return ResultJson.getReturnJson("", null);
+        if (loginType == 1) {
+            UserInfoDTO userInfo = loginService.loginByPassword(phone, password);
+            if (userInfo == null) {
+                return ResultJson.getReturnJson("密码错误！", null);
+            } else {
+                return ResultJson.getReturnJson(userInfo);
+            }
+        } else {
+            HttpSession session = request.getSession();
+            Object sessionCode = session.getAttribute(Constant.VERIFY_CODE);
+            if (code.equals(String.valueOf(sessionCode))) {
+                return ResultJson.getReturnJson(loginService.loginByCode(phone));
+            } else {
+                return ResultJson.getReturnJson("登陆失败！验证码不正确", null);
+            }
+        }
+
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ResultJson<UserInfoDTO> register(@RequestParam(value = "phone", required = true) String phone, @RequestParam(value = "code", required = false) String code,
-                                        @RequestParam(value = "password", required = false) String password, HttpServletRequest request) {
-        return ResultJson.getReturnJson("", null);
+                                            @RequestParam(value = "password", required = false) String password, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Object sessionCode = session.getAttribute(Constant.VERIFY_CODE);
+        if (code.equals(String.valueOf(sessionCode))) {
+            if (loginService.isRegister(phone)) {
+                return ResultJson.getReturnJson(loginService.register(phone, password));
+            } else {
+                return ResultJson.getReturnJson("你已经注册过啦！", null);
+            }
+        } else {
+            return ResultJson.getReturnJson("注册失败！验证码不正确", null);
+        }
     }
 
 }
