@@ -14,6 +14,7 @@ spring:
       servlet:
         content-type: text/html
       cache: false
+
     datasource:
         name: test
         url: jdbc:mysql://118.24.73.238:3306/funnyContent?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=UTC

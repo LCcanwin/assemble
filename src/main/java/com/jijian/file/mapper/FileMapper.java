@@ -1,5 +1,6 @@
 package com.jijian.file.mapper;
 
+import com.jijian.base.BaseMapper;
 import com.jijian.file.entity.FileEntity;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -9,6 +10,8 @@ import org.apache.ibatis.annotations.Mapper;
  * Content:
  */
 @Mapper
-public interface FileMapper {
-    int insertFile(FileEntity fileEntity);
+public interface FileMapper  {
+    int insert(FileEntity fileEntity);
+
+    int updatefile (FileEntity fileEntity);
 }

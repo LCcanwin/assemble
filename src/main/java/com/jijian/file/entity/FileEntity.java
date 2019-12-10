@@ -2,6 +2,7 @@ package com.jijian.file.entity;
 
 import com.gitee.sunchenbin.mybatis.actable.annotation.Column;
 import com.gitee.sunchenbin.mybatis.actable.annotation.Table;
+import com.gitee.sunchenbin.mybatis.actable.command.BaseModel;
 import com.gitee.sunchenbin.mybatis.actable.constants.MySqlTypeConstant;
 import com.jijian.base.BaseEntity;
 import lombok.Getter;
@@ -14,8 +15,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@Table(name = "file")
+@Table(name = "tbl_file")
 public class FileEntity extends BaseEntity {
+
     /**
      * 原文件名
      * **/
@@ -37,7 +39,7 @@ public class FileEntity extends BaseEntity {
     @Column(name = "u_id",type = MySqlTypeConstant.VARCHAR,length = 64)
     private String   uId;
     /***
-     * 文件类型
+     * 文件类型 1.身份证正面  2.份证反面 ， 3. 营业执照
      * */
     @Column(name = "file_type", type = MySqlTypeConstant.VARCHAR)
     private String fileType;
