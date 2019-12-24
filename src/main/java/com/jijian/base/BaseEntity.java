@@ -6,11 +6,6 @@ import com.gitee.sunchenbin.mybatis.actable.command.BaseModel;
 import com.gitee.sunchenbin.mybatis.actable.constants.MySqlTypeConstant;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.io.Serializable;
 import java.util.Date;
 @Setter
 @Getter
