@@ -35,7 +35,8 @@ public class FileController {
         // 获取上传文件的后缀
         String fileSuffix = uploadPathName.substring(uploadPathName.lastIndexOf(".") + 1, uploadPathName.length());
             // 上传目录地址
-         String uploadpath="E:/manage/image";//windows路径
+//         String uploadpath="E:/manage/image";//windows路径
+        String uploadpath="/data/image";
         // 上传文件名
         String fileNewName = new Date().getTime() + new Random().nextInt(100) + "." + fileSuffix;
         File savefile = new File(uploadpath+fileNewName);
@@ -51,7 +52,7 @@ public class FileController {
             fileEntity.setDeleted(0);
             fileEntity.setFileType(fileType);
             fileEntity.setBId(bId);
-            fileEntity.setFileUrl(uploadpath+"/"+fileNewName);
+            fileEntity.setFileUrl("/image/url/"+fileNewName);
             if(fileService.insert(fileEntity)>0){
                 return ResultJson.getReturnJson(200,"上传成功!",fileEntity);
             }
