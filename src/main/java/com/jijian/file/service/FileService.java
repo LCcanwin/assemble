@@ -1,7 +1,7 @@
 package com.jijian.file.service;
 
-import com.jijian.base.BaseService;
-import com.jijian.common.ResultJson;
+//import com.jijian.base.BaseService;
+//import com.jijian.common.ResultJson;
 import com.jijian.file.entity.FileEntity;
 
 import java.io.File;

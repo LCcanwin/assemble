@@ -1,7 +1,7 @@
 package com.jijian.file.service.impl;
 
-import com.jijian.base.BaseService;
-import com.jijian.base.BaseServiceImpl;
+//import com.jijian.base.BaseService;
+//import com.jijian.base.BaseServiceImpl;
 import com.jijian.common.ResultJson;
 import com.jijian.file.entity.FileEntity;
 import com.jijian.file.mapper.FileMapper;

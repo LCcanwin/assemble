@@ -1,6 +1,6 @@
 package com.jijian.file.mapper;
 
-import com.jijian.base.BaseMapper;
+//import com.jijian.base.BaseMapper;
 import com.jijian.file.entity.FileEntity;
 import org.apache.ibatis.annotations.Mapper;
 

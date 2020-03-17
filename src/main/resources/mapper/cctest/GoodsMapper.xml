@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+    <mapper namespace="com.jijian.assemble.mapper.GoodsMapper">
+    <resultMap id="goodsInfo" type="com.jijian.assemble.dto.GoodsDTO" >
+        <id column="id" property="id" javaType="int"/>
+        <result column="name" property="name" javaType="String"/>
+        <result column="img" property="img" javaType="String"/>
+        <result column="price" property="price" javaType="double"/>
+        <result column="discount" property="discount" javaType="double"/>
+        <result column="type" property="type" javaType="String"/>
+        <result column="businesId" property="businesId" javaType="String"/>
+        <result column="goodsNumber" property="goodsNumber" javaType="int"/>
+    </resultMap>
+
+    <sql id="goodsColumn">
+        g.id,
+        g.name,
+        g.img,
+        g.price,
+        g.discount,
+        g.type,
+        g.busines_id,
+        g.goods_number
+    </sql>
+
+    <select id="findAllList" resultType="com.jijian.assemble.entity.Goods">
+        SELECT
+        <include refid="goodsColumn"/>
+        from goods g
+        where g.deleted= 0
+    </select>
+    <select id="findByBusiness" resultType="com.jijian.assemble.entity.Goods">
+        select <include refid="goodsColumn"/> from goods g where busines_id=#{businesId}
+    </select>
+    <update id="update">
+     update goods set
+     name=#{name},
+     img=#{img},
+     price=#{price},
+     discount=#{discount},
+     type=#{type},
+     busines_id=#{businesId},
+     goods_number=#{goodsNumber}
+     where id=#{id}
+    </update>
+
+
+    <insert id="addGoods">
+        insert into goods(name,img,price,type,discount,create_date,update_date,create_user,update_user,deleted,busines_id,goods_number) values
+        (#{name},#{img},#{price},#{type},#{discount},now(),now(),#{createUser},#{updateUser},0,#{businesId},#{goodsNumber})
+    </insert>
+
+
+    <select id="getById" parameterType="string" resultType="com.jijian.assemble.entity.Goods">
+        select  <include refid="goodsColumn"/> from goods g where id=#{id}
+    </select>
+
+    <update id="delete">
+        update goods set deleted=1 where id=#{id}
+    </update>
+</mapper>
+    
