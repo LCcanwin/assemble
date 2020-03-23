@@ -43,11 +43,20 @@
               (#{name},#{shopTypeId},#{goodsTypeId},#{password},#{remark},#{deleted})
         </insert>
 
+    <update id="businessAttestation">
+        update tbl_business
+        set
+            attestation_flag=0,
+            name=#{name},
+            area=#{area}
+         where id=#{id}
+    </update>
+
 
     <insert id="addBusiness">
-         insert  into tbl_business (id,number,type,status,attestation_flag,area,deleted)
+         insert  into tbl_business (id,number,password,type,status,attestation_flag,area,deleted)
             value
-              (#{id},#{number},#{type},#{status},#{attestationFlag},#{area},#{deleted})
+              (#{id},#{number},#{password},#{type},#{status},#{attestationFlag},#{area},#{deleted})
     </insert>
 
 

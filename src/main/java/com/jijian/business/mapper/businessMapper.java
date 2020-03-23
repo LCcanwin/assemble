@@ -17,6 +17,13 @@ public interface businessMapper {
     int  insertAttestation (businessEntity business);
 
     /**
+     * 商家认证
+     * @param business
+     * @return
+     */
+    int businessAttestation(businessEntity business);
+
+    /**
      * 商家新增
      * @param businessEntity
      * @return

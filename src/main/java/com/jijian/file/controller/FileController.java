@@ -1,5 +1,6 @@
 package com.jijian.file.controller;
 
+import com.jijian.common.Constant;
 import com.jijian.common.ResultJson;
 import com.jijian.file.entity.FileEntity;
 import com.jijian.file.service.FileService;
@@ -35,7 +36,8 @@ public class FileController {
         // 获取上传文件的后缀
         String fileSuffix = uploadPathName.substring(uploadPathName.lastIndexOf(".") + 1, uploadPathName.length());
             // 上传目录地址
-         String uploadpath="D:/manage/image/";//windows路径
+//         String uploadpath="D:/manage/image/";//windows路径
+         String uploadpath= Constant.IMAGE_PATH;//windows路径
 //        String uploadpath="/data/image";
         // 上传文件名
         String fileNewName = new Date().getTime() + new Random().nextInt(100) + "." + fileSuffix;

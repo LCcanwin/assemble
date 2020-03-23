@@ -57,6 +57,8 @@
       <div class="login-header text-center">
         <a href="index.html"> <img alt="light year admin" th:src="@{/images/logo-sidebar.png}"> </a>
       </div>
+
+      <p style="color: red;" th:text="${logMsg}" th:if="${not #strings.isEmpty(logMsg)}"></p>
       <form  th:action="@{/back/api/login}" method="post">
         <div class="form-group has-feedback feedback-left">
           <input type="text" placeholder="请输入您的用户名" class="form-control" name="name" id="name" />

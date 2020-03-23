@@ -86,21 +86,7 @@ public class LoginController implements LoginControllerDoc {
         Object sessionCode = session.getAttribute(Constant.VERIFY_CODE);
         if (code.equals(String.valueOf(sessionCode))) {
             if (loginService.isRegister(phone)) {
-                UserInfoDTO user=  loginService.register(phone, password,type);
-
-                //注册用户的时同时注册商家信息
-                businessEntity businessEntity=new businessEntity();
-                businessEntity.setId(businessEntity.getId());
-                businessEntity.setNumber(phone);
-                //未认证
-                businessEntity.setAttestationFlag(1);
-                //未审核
-                businessEntity.setStatus(1);
-                businessEntity.setType(Integer.valueOf(type));
-                businessEntity.setArea(area);
-                businessService.addBusiness(businessEntity);
-
-
+                UserInfoDTO user=  loginService.register(phone, password,type,area);
                 return ResultJson.getReturnJson(user);
             } else {
                 return ResultJson.getReturnJson("你已经注册过啦！", null);

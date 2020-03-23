@@ -6,11 +6,13 @@ import com.jijian.assemble.service.LoginService;
 import com.jijian.assemble.utils.MD5Util;
 import com.jijian.assemble.utils.TokenUtil;
 import com.jijian.business.entity.businessEntity;
+import com.jijian.business.mapper.businessMapper;
 import com.jijian.business.service.businessService;
 import com.jijian.utils.HttpClientUtil;
 import com.jijian.utils.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -26,7 +28,7 @@ public class LoginServiceImpl implements LoginService {
     private UserMapper userMapper;
 
     @Autowired
-    private com.jijian.business.service.businessService businessService;
+    private com.jijian.business.mapper.businessMapper businessMapper;
 
     @Override
     public Integer getVerifyCode(String phone, Integer code) {
@@ -45,16 +47,32 @@ public class LoginServiceImpl implements LoginService {
      * @return
      */
     @Override
-    public UserInfoDTO register(String phone, String password,String type) {
+
+    @Transactional
+    public UserInfoDTO register(String phone, String password,String type,String area) {
         String md5Password = MD5Util.getMD5(password);
         int count = userMapper.register(phone, md5Password);
-
-
 
         //生成token
         String token = TokenUtil.makeToken();
         userMapper.makeToken(token, phone);
         UserInfoDTO userInfoDTO = userMapper.getUserInfo(phone);
+
+
+        //注册用户的时同时注册商家信息
+        businessEntity businessEntity=new businessEntity();
+        businessEntity.setId(userInfoDTO.getUserId());
+        businessEntity.setNumber(phone);
+        businessEntity.setPassword(password);
+        //未认证
+        businessEntity.setAttestationFlag(1);
+        //未审核
+        businessEntity.setStatus(1);
+        businessEntity.setType(Integer.valueOf(type));
+        businessEntity.setArea(area);
+        businessEntity.setDeleted(0);
+        businessMapper.addBusiness(businessEntity);
+
         return userInfoDTO;
     }
 

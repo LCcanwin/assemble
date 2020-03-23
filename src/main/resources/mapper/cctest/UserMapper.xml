@@ -16,8 +16,7 @@
     </update>
     <insert id="register" parameterType="string">
         insert into user_info(user_name,user_number,pass_word,tell_phone,create_date,update_date) values
-        (#{phone},#{phone},#{password},
-			#{phone},now(),now())
+        (#{phone},#{phone},#{password},#{phone},now(),now())
     </insert>
     <select id="getUserInfo" parameterType="string" resultMap="userInfo">
         select id,user_name,user_number,token from user_info where tell_phone=#{phone}
@@ -26,7 +25,7 @@
         select pass_word from user_info where tell_phone=#{phone}
     </select>
     <select id="userCount" parameterType="string" resultType="int">
-        select COUNT(*) from user_info where tell_phone=#{phone} and deleted=1
+        select COUNT(*) from user_info where tell_phone=#{phone} and deleted=0
     </select>
 </mapper>
     
