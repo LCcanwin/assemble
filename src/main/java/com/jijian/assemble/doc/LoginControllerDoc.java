@@ -24,5 +24,5 @@ public interface LoginControllerDoc {
 
     @ApiOperation("注册功能")
     ResultJson<UserInfoDTO> register(@ApiParam(value = "phone", required = true) String phone, @ApiParam(value = "code", required = true) String code,
-                                     @ApiParam(value = "password", required = true) String password, HttpServletRequest request);
+                                     @ApiParam(value = "password", required = true) String password, @ApiParam(value = "type", required = true) String type,@ApiParam(value = "area", required = true) String area,HttpServletRequest request);
 }

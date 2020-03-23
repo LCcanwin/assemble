@@ -10,6 +10,15 @@
         <result column="type" property="type" javaType="String"/>
         <result column="businesId" property="businesId" javaType="String"/>
         <result column="goodsNumber" property="goodsNumber" javaType="int"/>
+
+        <result column="specification" property="specification" javaType="String"/>
+        <result column="unit_price" property="unitPrice" javaType="double"/>
+        <result column="readyFlag" property="readyFlag" javaType="String"/>
+        <result column="deliveryDate" property="deliveryDate" javaType="int"/>
+        <result column="returnsFlag" property="returnsFlag" javaType="String"/>
+        <result column="flag" property="flag" javaType="String"/>
+        <result column="upFlag" property="upFlag" javaType="String"/>
+
     </resultMap>
 
     <sql id="goodsColumn">
@@ -20,7 +29,14 @@
         g.discount,
         g.type,
         g.busines_id,
-        g.goods_number
+        g.goods_number,
+        g.unit_price,
+        g.specification,
+        g.readyFlag,
+        g.deliveryDate,
+        g.returnsFlag,
+        g.flag,
+        g.upFlag
     </sql>
 
     <select id="findAllList" resultType="com.jijian.assemble.entity.Goods">
@@ -40,14 +56,20 @@
      discount=#{discount},
      type=#{type},
      busines_id=#{businesId},
-     goods_number=#{goodsNumber}
+     goods_number=#{goodsNumber},
+     unit_price=#{unitPrice},
+     specification=#{specification},
+     readyFlag=#{readyFlag},
+     deliveryDate=#{deliveryDate},
+     returnsFlag=#{returnsFlag},
+     flag=#{flag}
      where id=#{id}
     </update>
 
 
     <insert id="addGoods">
-        insert into goods(name,img,price,type,discount,create_date,update_date,create_user,update_user,deleted,busines_id,goods_number) values
-        (#{name},#{img},#{price},#{type},#{discount},now(),now(),#{createUser},#{updateUser},0,#{businesId},#{goodsNumber})
+        insert into goods(name,img,price,type,discount,create_date,update_date,create_user,update_user,deleted,busines_id,goods_number,unit_price,specification,readyFlag,deliveryDate,returnsFlag,flag) values
+        (#{name},#{img},#{price},#{type},#{discount},now(),now(),#{createUser},#{updateUser},0,#{businesId},#{goodsNumber},#{unitPrice},#{specification},#{readyFlag},#{deliveryDate},#{returnsFlag},#{flag})
     </insert>
 
 
@@ -57,6 +79,10 @@
 
     <update id="delete">
         update goods set deleted=1 where id=#{id}
+    </update>
+
+    <update id="upGoods">
+            updatse goods set upFlag=#{upFlag} where id=#{id}
     </update>
 </mapper>
     

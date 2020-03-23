@@ -9,7 +9,7 @@ import com.jijian.assemble.dto.UserInfoDTO;
  */
 public interface LoginService {
     Integer getVerifyCode(String phone,Integer code);
-    UserInfoDTO register(String phone, String password);
+    UserInfoDTO register(String phone, String password,String type);
     UserInfoDTO loginByCode(String phone);
     UserInfoDTO loginByPassword(String phone, String password);
     Boolean isRegister(String phone);

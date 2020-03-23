@@ -1,5 +1,7 @@
 package com.jijian.assemble.controller;
 
+import com.jijian.business.entity.businessEntity;
+import com.jijian.business.service.businessService;
 import com.jijian.common.Constant;
 import com.jijian.common.ResultJson;
 import com.jijian.assemble.doc.LoginControllerDoc;
@@ -25,6 +27,9 @@ public class LoginController implements LoginControllerDoc {
 
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private com.jijian.business.service.businessService businessService;
 
     @RequestMapping(value = "/getVerifyCode", method = RequestMethod.GET)
     public ResultJson<Boolean> getVerifyCode(@RequestParam(value = "phone", required = true) String phone, HttpServletRequest request) {
@@ -63,14 +68,40 @@ public class LoginController implements LoginControllerDoc {
 
     }
 
+    /**
+     *
+     * @param phone
+     * @param code
+     * @param password
+     * @param type
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ResultJson<UserInfoDTO> register(@RequestParam(value = "phone", required = true) String phone, @RequestParam(value = "code", required = false) String code,
-                                            @RequestParam(value = "password", required = false) String password, HttpServletRequest request) {
+                                            @RequestParam(value = "password", required = false) String password,@RequestParam(value = "type", required = false) String type ,
+                                            @RequestParam(value = "area", required = false) String area ,
+                                            HttpServletRequest request) {
         HttpSession session = request.getSession();
         Object sessionCode = session.getAttribute(Constant.VERIFY_CODE);
         if (code.equals(String.valueOf(sessionCode))) {
             if (loginService.isRegister(phone)) {
-                return ResultJson.getReturnJson(loginService.register(phone, password));
+                UserInfoDTO user=  loginService.register(phone, password,type);
+
+                //注册用户的时同时注册商家信息
+                businessEntity businessEntity=new businessEntity();
+                businessEntity.setId(businessEntity.getId());
+                businessEntity.setNumber(phone);
+                //未认证
+                businessEntity.setAttestationFlag(1);
+                //未审核
+                businessEntity.setStatus(1);
+                businessEntity.setType(Integer.valueOf(type));
+                businessEntity.setArea(area);
+                businessService.addBusiness(businessEntity);
+
+
+                return ResultJson.getReturnJson(user);
             } else {
                 return ResultJson.getReturnJson("你已经注册过啦！", null);
             }

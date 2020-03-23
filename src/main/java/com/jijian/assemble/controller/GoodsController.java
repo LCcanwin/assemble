@@ -7,8 +7,12 @@ import com.jijian.assemble.entity.Goods;
 import com.jijian.assemble.entity.User;
 import com.jijian.assemble.service.GoodsService;
 import com.jijian.common.ResultJson;
+import com.jijian.file.entity.FileEntity;
+import com.jijian.file.service.FileService;
+import com.jijian.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,6 +22,9 @@ public class GoodsController {
 
     @Autowired
     private GoodsService goodsService;
+
+    @Autowired
+    private FileService fileService;
 
     /**
      * 获取所有商品信息
@@ -57,13 +64,15 @@ public class GoodsController {
      * @return
      */
     @RequestMapping(value = "/addGoods" ,method = RequestMethod.POST)
-    public ResultJson<GoodsDTO> addGoods(@RequestBody Goods goods) {
-        Integer i = goodsService.addGoods(goods);
-        if(i>0){
-            return ResultJson.getReturnJson("新增成功！", null);
-        }else{
-            return ResultJson.getReturnJson("新增失败！", null);
-        }
+    public ResultJson<GoodsDTO> addGoods(@RequestBody Goods goods,@RequestParam(required = false) String  fileId) {
+            goods.setImg(fileId);
+            Integer i = goodsService.addGoods(goods);
+            if(i>0){
+                return ResultJson.getReturnJson("新增成功！", null);
+            }else{
+                return ResultJson.getReturnJson("新增失败！", null);
+            }
+
     }
 
     /**
@@ -93,6 +102,22 @@ public class GoodsController {
             return ResultJson.getReturnJson("修改成功！", null);
         }else{
             return ResultJson.getReturnJson("修改失败！", null);
+        }
+    }
+
+    /**
+     * 商品上下架
+     * @param id
+     * @param upFlag
+     * @return
+     */
+    @RequestMapping(value = "/upGoods" ,method = RequestMethod.PUT)
+    public ResultJson<GoodsDTO> upGoods(String id,String upFlag) {
+        Integer i = goodsService.upGoods(id,upFlag);
+        if(i>0){
+            return ResultJson.getReturnJson("操作成功！", null);
+        }else{
+            return ResultJson.getReturnJson("操作失败！", null);
         }
     }
 }

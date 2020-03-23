@@ -17,6 +17,11 @@ public class GoodsServiceImpl implements GoodsService {
     private GoodsMapper goodsMapper;
 
     @Override
+    public Integer upGoods(String id, String upFlag) {
+        return goodsMapper.upGoods(id,upFlag);
+    }
+
+    @Override
     public Integer addGoods(Goods goods) {
 
         return goodsMapper.addGoods(goods);

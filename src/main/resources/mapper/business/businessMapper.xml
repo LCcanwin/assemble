@@ -2,9 +2,88 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
     <mapper namespace="com.jijian.business.mapper.businessMapper">
+    <resultMap id="businessResult" type="com.jijian.business.entity.businessEntity">
+        <id column="id" property="id"/>
+        <result column="number" property="number"/>
+        <result column="name" property="name"/>
+        <result column="img" property="img"/>
+        <result column="img1" property="img1"/>
+        <result column="status" property="status"/>
+        <result column="type" property="type"/>
+        <result column="remark" property="remark"/>
+        <collection property="storeEntityList" ofType="com.jijian.business.entity.StoreEntity">
+            <id column="storeId" property="id"></id>
+            <result column="storeName" property="name"/>
+            <result column="storeImg" property="img"/>
+        </collection>
+    </resultMap>
+
+    <sql id="businessSql">
+        b.id,
+        b.number,
+        b.name,
+        b.password,
+        b.img,
+        b.img1,
+        b.status,
+        b.type,
+        b.remark
+    </sql>
+
+    <sql id="storeSql">
+        s.id as storeId,
+        s.name as storeName,
+        s.img as storeImg
+    </sql>
+
+
         <insert id="insertAttestation"  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
               insert  into tbl_business (name,shop_type_id,goods_type_id,password,remark,deleted)
             value
               (#{name},#{shopTypeId},#{goodsTypeId},#{password},#{remark},#{deleted})
         </insert>
+
+
+    <insert id="addBusiness">
+         insert  into tbl_business (id,number,type,status,attestation_flag,area,deleted)
+            value
+              (#{id},#{number},#{type},#{status},#{attestationFlag},#{area},#{deleted})
+    </insert>
+
+
+    <select id="findList" resultType="com.jijian.business.entity.businessEntity">
+
+        select
+        b.id,
+        b.number,
+        b.name,
+        b.password,
+        b.img,
+        b.img1,
+        b.status,
+        b.type,
+        b.remark
+        from tbl_business b
+        where b.deleted=0
+        <if test="name!=null and name !='' ">
+            and b.name=#{name}
+        </if>
+        <if test="type!=null and type !='' ">
+            and b.type=#{type}
+        </if>
+
+    </select>
+
+    <select id="get" resultMap="businessResult">
+        select
+        <include refid="businessSql"/>,
+        <include refid="storeSql"/>
+        from tbl_business b
+        left join tbl_store s on b.id=s.bussiness_id
+        where b.id=#{id}
+    </select>
+    <update id="businessDeal">
+        update tbl_business set status=0 where id=#{id}
+    </update>
+
     </mapper>

@@ -5,8 +5,11 @@ import com.jijian.assemble.mapper.UserMapper;
 import com.jijian.assemble.service.LoginService;
 import com.jijian.assemble.utils.MD5Util;
 import com.jijian.assemble.utils.TokenUtil;
+import com.jijian.business.entity.businessEntity;
+import com.jijian.business.service.businessService;
 import com.jijian.utils.HttpClientUtil;
 import com.jijian.utils.SendMessage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -21,6 +24,9 @@ public class LoginServiceImpl implements LoginService {
 
     @Resource
     private UserMapper userMapper;
+
+    @Autowired
+    private com.jijian.business.service.businessService businessService;
 
     @Override
     public Integer getVerifyCode(String phone, Integer code) {
@@ -39,9 +45,12 @@ public class LoginServiceImpl implements LoginService {
      * @return
      */
     @Override
-    public UserInfoDTO register(String phone, String password) {
+    public UserInfoDTO register(String phone, String password,String type) {
         String md5Password = MD5Util.getMD5(password);
         int count = userMapper.register(phone, md5Password);
+
+
+
         //生成token
         String token = TokenUtil.makeToken();
         userMapper.makeToken(token, phone);

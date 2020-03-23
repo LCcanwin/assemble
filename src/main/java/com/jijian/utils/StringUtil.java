@@ -1,9 +1,6 @@
 package com.jijian.utils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class StringUtil {
     public static boolean isNullOrEmpty(String s) {
@@ -41,5 +38,9 @@ public class StringUtil {
             ep.printStackTrace();
         }
         return new ArrayList<>(resultList);
+    }
+
+    public static String uuid() {
+        return UUID.randomUUID().toString().replaceAll("-", "");
     }
 }
