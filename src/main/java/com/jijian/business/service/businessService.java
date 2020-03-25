@@ -1,6 +1,7 @@
 package com.jijian.business.service;
 
 import com.jijian.assemble.entity.Business;
+import com.jijian.business.common.AttestationRequest;
 import com.jijian.business.entity.businessEntity;
 
 import java.util.List;
@@ -30,4 +31,11 @@ public interface businessService {
     businessEntity get(String id);
 
     Integer businessDeal(String id);
+
+
+    /**
+     * 商家认证
+     * @param request
+     */
+    void businessAttestation(AttestationRequest request);
 }

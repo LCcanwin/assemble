@@ -47,6 +47,7 @@
         update tbl_business
         set
             attestation_flag=0,
+            type=#{type},
             name=#{name},
             area=#{area}
          where id=#{id}
@@ -94,5 +95,14 @@
     <update id="businessDeal">
         update tbl_business set status=0 where id=#{id}
     </update>
+
+
+    <select id="businessCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select count(*) from tbl_business where deleted=0
+        <if test=" type!=null and type!=''">
+            and  type=#{type}
+        </if>
+
+    </select>
 
     </mapper>

@@ -2,6 +2,8 @@ package com.jijian.business.mapper;
 
 import com.jijian.assemble.entity.Business;
 import com.jijian.business.entity.businessEntity;
+import io.swagger.models.auth.In;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -44,5 +46,17 @@ public interface businessMapper {
      */
     businessEntity get(String id);
 
+    /**
+     * 商家审核
+     * @param id
+     * @return
+     */
     Integer businessDeal(String id);
+
+    /**
+     * 按类型统计商家数量
+     * @param type
+     * @return
+     */
+    Integer businessCount(@Param("type") String  type);
 }

@@ -7,6 +7,7 @@ import com.jijian.common.ResultJson;
 import com.jijian.assemble.doc.LoginControllerDoc;
 import com.jijian.assemble.dto.UserInfoDTO;
 import com.jijian.assemble.service.LoginService;
+import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,7 +30,8 @@ public class LoginController implements LoginControllerDoc {
     private LoginService loginService;
 
     @Autowired
-    private com.jijian.business.service.businessService businessService;
+    private businessService businessService;
+    
 
     @RequestMapping(value = "/getVerifyCode", method = RequestMethod.GET)
     public ResultJson<Boolean> getVerifyCode(@RequestParam(value = "phone", required = true) String phone, HttpServletRequest request) {
@@ -47,20 +49,27 @@ public class LoginController implements LoginControllerDoc {
 
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ResultJson<UserInfoDTO> login(@RequestParam(value = "phone", required = true) String phone, @RequestParam(value = "code", required = false) String code, @RequestParam(value = "password", required = false) String password,
+    public ResultJson<businessEntity> login(@RequestParam(value = "phone", required = true) String phone, @RequestParam(value = "code", required = false) String code, @RequestParam(value = "password", required = false) String password,
                                          @RequestParam(value = "loginType") Integer loginType, HttpServletRequest request) {
         if (loginType == 1) {
             UserInfoDTO userInfo = loginService.loginByPassword(phone, password);
-            if (userInfo == null) {
+            businessEntity businessEntity=businessService.get(String.valueOf(userInfo.getUserId()));
+            if (businessEntity == null) {
                 return ResultJson.getReturnJson("密码错误！", null);
             } else {
-                return ResultJson.getReturnJson(userInfo);
+                return ResultJson.getReturnJson(businessEntity);
             }
         } else {
             HttpSession session = request.getSession();
             Object sessionCode = session.getAttribute(Constant.VERIFY_CODE);
             if (code.equals(String.valueOf(sessionCode))) {
-                return ResultJson.getReturnJson(loginService.loginByCode(phone));
+                UserInfoDTO userInfo = loginService.loginByCode(phone);
+                if(userInfo!=null){
+                    businessEntity businessEntity=businessService.get(String.valueOf(userInfo.getUserId()));
+                    return ResultJson.getReturnJson(businessEntity);
+                }else{
+                    return ResultJson.getReturnJson("登陆失败！请先注册", null);
+                }
             } else {
                 return ResultJson.getReturnJson("登陆失败！验证码不正确", null);
             }
@@ -96,4 +105,18 @@ public class LoginController implements LoginControllerDoc {
         }
     }
 
+
+    /**
+     * 修改密码
+     * @param phone
+     * @param password
+     * @return
+     */
+    @RequestMapping(value = "/updatePassword",method = RequestMethod.PUT)
+    public  ResultJson<Boolean> updatePassword(@RequestParam("phone") String phone,@RequestParam("password") String password){
+        if(loginService.updatePassword(phone,password)>0){
+            return ResultJson.getReturnJson("修改成功", true);
+        }else
+            return ResultJson.getReturnJson("修改失败", false);
+    }
 }

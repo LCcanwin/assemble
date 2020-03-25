@@ -27,5 +27,12 @@
     <select id="userCount" parameterType="string" resultType="int">
         select COUNT(*) from user_info where tell_phone=#{phone} and deleted=0
     </select>
+
+
+
+
+    <update id="updatePassword">
+        update user_info set pass_word=#{password} where phone=#{phone}
+    </update>
 </mapper>
     

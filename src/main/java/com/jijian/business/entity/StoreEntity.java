@@ -26,4 +26,9 @@ public class StoreEntity  extends BaseEntity {
     @Column(name = "img",type = MySqlTypeConstant.VARCHAR,length = 64)
     private String img;
 
+    @Column(name = "bussiness_id",type = MySqlTypeConstant.INT,length = 64)
+    private Integer businessId;
+
+
+
 }

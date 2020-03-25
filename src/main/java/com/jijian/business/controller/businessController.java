@@ -1,14 +1,12 @@
 package com.jijian.business.controller;
 
 import com.jijian.assemble.entity.Business;
+import com.jijian.business.common.AttestationRequest;
 import com.jijian.business.entity.businessEntity;
 import com.jijian.business.service.businessService;
 import com.jijian.common.ResultJson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Author: chenchuan
@@ -29,6 +27,13 @@ public class businessController {
           } else {
               return  ResultJson.getReturnJson(400,"添加失败!",null);
           }
+    }
+
+    @RequestMapping(value = "/businessAttestation",method = RequestMethod.PUT)
+    @ResponseBody
+    public ResultJson businessAttestation(@RequestBody AttestationRequest request){
+        businessService.businessAttestation(request);
+        return  ResultJson.getReturnJson(200,"认证成功!",null);
     }
 }
 

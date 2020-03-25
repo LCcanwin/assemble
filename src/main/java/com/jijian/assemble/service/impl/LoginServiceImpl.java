@@ -101,4 +101,10 @@ public class LoginServiceImpl implements LoginService {
             return true;
         }
     }
+
+    @Override
+    public Integer updatePassword(String phone, String password) {
+        String md5Password = MD5Util.getMD5(password);
+        return userMapper.updatePassword(phone,md5Password);
+    }
 }

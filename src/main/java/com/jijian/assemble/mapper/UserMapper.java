@@ -16,4 +16,6 @@ public interface UserMapper{
     UserInfoDTO getUserInfo(String phone);
     String getPassword(String phone);
     Integer userCount(String phone);
+
+    Integer updatePassword(@Param("phone") String phone,@Param("password")String password);
 }

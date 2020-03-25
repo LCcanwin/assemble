@@ -13,4 +13,6 @@ public interface LoginService {
     UserInfoDTO loginByCode(String phone);
     UserInfoDTO loginByPassword(String phone, String password);
     Boolean isRegister(String phone);
+
+    Integer updatePassword(String phone,String password);
 }

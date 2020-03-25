@@ -1,5 +1,6 @@
 package com.jijian.assemble.doc;
 
+import com.jijian.business.entity.businessEntity;
 import com.jijian.common.ResultJson;
 import com.jijian.assemble.dto.UserInfoDTO;
 import io.swagger.annotations.Api;
@@ -19,8 +20,8 @@ public interface LoginControllerDoc {
     ResultJson<Boolean> getVerifyCode(@ApiParam(value = "phone", required = true) String phone,HttpServletRequest request);
 
     @ApiOperation("登陆功能")
-    ResultJson<UserInfoDTO> login(@ApiParam(value = "phone", required = true) String phone, @ApiParam(value = "code", required = false) String code, @ApiParam(value = "password", required = false) String password,
-                              @ApiParam(value = "loginType") Integer loginType, HttpServletRequest request);
+    ResultJson<businessEntity> login(@ApiParam(value = "phone", required = true) String phone, @ApiParam(value = "code", required = false) String code, @ApiParam(value = "password", required = false) String password,
+                                     @ApiParam(value = "loginType") Integer loginType, HttpServletRequest request);
 
     @ApiOperation("注册功能")
     ResultJson<UserInfoDTO> register(@ApiParam(value = "phone", required = true) String phone, @ApiParam(value = "code", required = true) String code,

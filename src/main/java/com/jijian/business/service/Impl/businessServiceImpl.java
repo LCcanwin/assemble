@@ -2,14 +2,17 @@ package com.jijian.business.service.Impl;
 
 import com.github.pagehelper.PageHelper;
 import com.jijian.assemble.entity.Business;
+import com.jijian.business.common.AttestationRequest;
 import com.jijian.business.entity.StoreEntity;
 import com.jijian.business.entity.businessEntity;
+import com.jijian.business.mapper.StoreMapper;
 import com.jijian.business.mapper.businessMapper;
 import com.jijian.business.service.businessService;
 import com.jijian.file.entity.FileEntity;
 import com.jijian.file.mapper.FileMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,6 +24,9 @@ import java.util.List;
 @Service
 public class businessServiceImpl implements businessService {
     @Autowired private businessMapper businessmapper;
+
+    @Autowired
+    private StoreMapper storeMapper;
 
     @Autowired
     private FileMapper fileMapper;
@@ -65,5 +71,24 @@ public class businessServiceImpl implements businessService {
     @Override
     public Integer businessDeal(String id) {
         return businessmapper.businessDeal(id);
+    }
+
+
+    @Override
+    @Transactional
+    public void businessAttestation(AttestationRequest request) {
+        businessEntity business=new businessEntity();
+        business.setId(Integer.valueOf(request.getBId()));
+        business.setType(Integer.valueOf(request.getType()));
+        business.setName(request.getName());
+        business.setArea(request.getArea());
+        businessmapper.businessAttestation(business);
+
+        StoreEntity  storeEntity=new StoreEntity();
+        storeEntity.setName(request.getStoreName());
+        storeEntity.setBusinessId(Integer.valueOf(request.getBId()));
+        storeEntity.setDeleted(0);
+        storeMapper.addStore(storeEntity);
+
     }
 }
