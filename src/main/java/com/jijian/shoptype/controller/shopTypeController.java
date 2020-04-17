@@ -20,4 +20,9 @@ public class shopTypeController {
     public ResultJson getShopType(){
         return ResultJson.getReturnJson(200,"返回成功!",shoptypeservice.searchShopType());
     }
+
+    @RequestMapping("/getAreaList")
+    public ResultJson getAreaList(){
+        return ResultJson.getReturnJson(200,"返回成功!",shoptypeservice.getAreaList());
+    }
 }

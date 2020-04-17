@@ -5,6 +5,8 @@ import com.jijian.file.entity.FileEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * Author: chenchuan
  * Date: 2019/10/25 11:18
@@ -23,4 +25,15 @@ public interface FileMapper  {
      * @return
      */
     FileEntity getFileByTypeAndBid(@Param("bid")String bid, @Param("type")String type);
+
+    List<FileEntity>  getFileByGoodsIdAndBusinessId(@Param("bid")String bid, @Param("goodsId")String goodsId);
+
+    /**
+     * 通过文件类型和商家ID获取商品主副图片
+     * @param bid
+     * @param goodsId
+     * @param flag 0 主图片  1副图片
+     * @return
+     */
+    List<FileEntity>  getFileByGoodsIdAndBusinessIdAndFlag(@Param("bid")String bid, @Param("goodsId")String goodsId, @Param("flag")String flag);
 }

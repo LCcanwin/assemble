@@ -15,7 +15,7 @@ import java.io.Serializable;
 public class GoodsDTO implements Serializable {
 
     @ApiModelProperty("商品id")
-    private Integer id;
+    private String id;
     @ApiModelProperty("商品名称")
     private String name;
     @ApiModelProperty("商品图片")

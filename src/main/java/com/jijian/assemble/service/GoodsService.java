@@ -4,6 +4,7 @@ import com.jijian.assemble.entity.Goods;
 import io.swagger.models.auth.In;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface GoodsService {
@@ -14,5 +15,5 @@ public interface GoodsService {
     List<Goods> findList(Goods goods);
     List<Goods> findAllList();
     Goods getById(String id);
-    List<Goods> findByBusiness(String businessId);
+    Map<String,List<Goods>> findByBusiness(String businessId);
 }

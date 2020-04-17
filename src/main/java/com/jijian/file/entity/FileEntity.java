@@ -38,11 +38,21 @@ public class FileEntity extends BaseEntity {
      * **/
     @Column(name = "u_id",type = MySqlTypeConstant.VARCHAR,length = 64)
     private String   uId;
+    /**
+     * 商品id
+     * **/
+    @Column(name = "goods_id",type = MySqlTypeConstant.VARCHAR,length = 64)
+    private String   goodsId;
     /***
      * 文件类型 1.身份证正面  2.份证反面 ， 3. 营业执照  4.商品图片
      * */
-    @Column(name = "file_type", type = MySqlTypeConstant.VARCHAR)
+    @Column(name = "file_type", type = MySqlTypeConstant.VARCHAR,length = 2)
     private String fileType;
+    /***
+     * 是否为商品主图片 0是  1否
+     * */
+    @Column(name = "flag", type = MySqlTypeConstant.VARCHAR,length = 2)
+    private String flag;
     /**
      * 文件路径
      */

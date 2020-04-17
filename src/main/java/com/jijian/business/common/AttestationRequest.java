@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 public class AttestationRequest {
     private String bId;
+    private String id;
     private String name; //商家名称
     private String type; //商家类型 0个人 1个体商家
     private String area;

@@ -4,7 +4,7 @@
     <mapper namespace="com.jijian.business.mapper.StoreMapper">
 
     <insert id="addStore" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert tbl_store (name,bussiness_id,deleted) values (#{name},#{bussinessId},#{deleted})
+        insert tbl_store (name,bussiness_id,deleted) values (#{name},#{businessId},#{deleted})
     </insert>
 
     </mapper>

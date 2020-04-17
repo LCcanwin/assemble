@@ -56,7 +56,7 @@ public class businessServiceImpl implements businessService {
         FileEntity file3=fileMapper.getFileByTypeAndBid(String.valueOf(businessEntity.getId()),"3");
 
         List<StoreEntity> storeEntities=businessEntity.getStoreEntityList();
-        if(storeEntities.size()>0){
+        if(storeEntities.size()>0&&file3!=null){
             storeEntities.get(0).setImg(file3.getFileNewName());
         }
         if(file1!=null){
@@ -78,7 +78,7 @@ public class businessServiceImpl implements businessService {
     @Transactional
     public void businessAttestation(AttestationRequest request) {
         businessEntity business=new businessEntity();
-        business.setId(Integer.valueOf(request.getBId()));
+        business.setId(Integer.valueOf(request.getId()));
         business.setType(Integer.valueOf(request.getType()));
         business.setName(request.getName());
         business.setArea(request.getArea());
@@ -86,7 +86,7 @@ public class businessServiceImpl implements businessService {
 
         StoreEntity  storeEntity=new StoreEntity();
         storeEntity.setName(request.getStoreName());
-        storeEntity.setBusinessId(Integer.valueOf(request.getBId()));
+        storeEntity.setBusinessId(Integer.valueOf(request.getId()));
         storeEntity.setDeleted(0);
         storeMapper.addStore(storeEntity);
 

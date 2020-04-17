@@ -2,6 +2,7 @@ package com.jijian.shoptype.mapper;
 
 
 import com.jijian.shoptype.POJO.shoptypePOJO;
+import com.jijian.shoptype.entity.AreaEntity;
 import com.jijian.shoptype.entity.shoptypeEntity;
 
 import java.util.List;
@@ -17,4 +18,10 @@ public interface shopTypeMapper {
 
     /** 添加店铺类别**/
     int insertGoodsType(shoptypeEntity shoptypeEntity);
+
+    /**
+     *获取所有区域（暂时广安）
+     * @return
+     */
+    List<AreaEntity> getAreaList();
 }

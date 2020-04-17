@@ -19,7 +19,7 @@
         (#{phone},#{phone},#{password},#{phone},now(),now())
     </insert>
     <select id="getUserInfo" parameterType="string" resultMap="userInfo">
-        select id,user_name,user_number,token from user_info where tell_phone=#{phone}
+        select id,user_name,user_number,token from user_info where tell_phone=#{phone} limit 1
     </select>
     <select id="getPassword" resultType="string" parameterType="string">
         select pass_word from user_info where tell_phone=#{phone}

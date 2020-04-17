@@ -55,9 +55,9 @@
 
 
     <insert id="addBusiness">
-         insert  into tbl_business (id,number,password,type,status,attestation_flag,area,deleted)
+         insert  into tbl_business (id,number,password,status,attestation_flag,area,deleted)
             value
-              (#{id},#{number},#{password},#{type},#{status},#{attestationFlag},#{area},#{deleted})
+              (#{id},#{number},#{password},#{status},#{attestationFlag},#{area},#{deleted})
     </insert>
 
 
@@ -104,5 +104,9 @@
         </if>
 
     </select>
+
+    <update id="updatePassword">
+   update tbl_business set password=#{password} where number=#{phone}
+    </update>
 
     </mapper>

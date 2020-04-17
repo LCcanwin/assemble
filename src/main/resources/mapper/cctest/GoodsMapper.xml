@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
     <mapper namespace="com.jijian.assemble.mapper.GoodsMapper">
-    <resultMap id="goodsInfo" type="com.jijian.assemble.dto.GoodsDTO" >
-        <id column="id" property="id" javaType="int"/>
-        <result column="name" property="name" javaType="String"/>
-        <result column="img" property="img" javaType="String"/>
-        <result column="price" property="price" javaType="double"/>
-        <result column="discount" property="discount" javaType="double"/>
-        <result column="type" property="type" javaType="String"/>
-        <result column="businesId" property="businesId" javaType="String"/>
-        <result column="goodsNumber" property="goodsNumber" javaType="int"/>
+    <resultMap id="goodsInfo" type="com.jijian.assemble.entity.Goods" >
+        <id column="id" property="goodsId" />
+        <result column="name" property="name" />
+        <result column="img" property="img" />
+        <result column="price" property="price" />
+        <result column="discount" property="discount" />
+        <result column="type" property="type" />
+        <result column="busines_id" property="businesId" />
+        <result column="goods_number" property="goodsNumber" />
 
-        <result column="specification" property="specification" javaType="String"/>
-        <result column="unit_price" property="unitPrice" javaType="double"/>
-        <result column="readyFlag" property="readyFlag" javaType="String"/>
-        <result column="deliveryDate" property="deliveryDate" javaType="int"/>
-        <result column="returnsFlag" property="returnsFlag" javaType="String"/>
-        <result column="flag" property="flag" javaType="String"/>
-        <result column="upFlag" property="upFlag" javaType="String"/>
+        <result column="specification" property="specification" />
+        <result column="unit_price" property="unitPrice" />
+        <result column="readyFlag" property="readyFlag" />
+        <result column="deliveryDate" property="deliveryDate" />
+        <result column="returnsFlag" property="returnsFlag" />
+        <result column="flag" property="flag" />
+        <result column="up_flag" property="upFlag"/>
 
     </resultMap>
 
@@ -36,16 +36,18 @@
         g.deliveryDate,
         g.returnsFlag,
         g.flag,
-        g.upFlag
+        g.up_flag
     </sql>
 
-    <select id="findAllList" resultType="com.jijian.assemble.entity.Goods">
+    <select id="findAllList" resultMap="goodsInfo">
         SELECT
         <include refid="goodsColumn"/>
         from goods g
         where g.deleted= 0
     </select>
-    <select id="findByBusiness" resultType="com.jijian.assemble.entity.Goods">
+
+
+    <select id="findByBusiness" resultMap="goodsInfo">
         select <include refid="goodsColumn"/> from goods g where busines_id=#{businesId}
     </select>
     <update id="update">
@@ -68,12 +70,12 @@
 
 
     <insert id="addGoods">
-        insert into goods(name,img,price,type,discount,create_date,update_date,create_user,update_user,deleted,busines_id,goods_number,unit_price,specification,readyFlag,deliveryDate,returnsFlag,flag) values
-        (#{name},#{img},#{price},#{type},#{discount},now(),now(),#{createUser},#{updateUser},0,#{businesId},#{goodsNumber},#{unitPrice},#{specification},#{readyFlag},#{deliveryDate},#{returnsFlag},#{flag})
+        insert into goods(id,name,img,price,type,discount,create_date,update_date,create_user,update_user,deleted,busines_id,goods_number,unit_price,specification,readyFlag,deliveryDate,returnsFlag,flag,clap_num,up_flag) values
+        (#{goodsId},#{name},#{img},#{price},#{type},#{discount},now(),now(),#{createUser},#{updateUser},0,#{businesId},#{goodsNumber},#{unitPrice},#{specification},#{readyFlag},#{deliveryDate},#{returnsFlag},#{flag},#{clapNum},'1')
     </insert>
 
 
-    <select id="getById" parameterType="string" resultType="com.jijian.assemble.entity.Goods">
+    <select id="getById" parameterType="string" resultMap="goodsInfo">
         select  <include refid="goodsColumn"/> from goods g where id=#{id}
     </select>
 
@@ -82,7 +84,7 @@
     </update>
 
     <update id="upGoods">
-            updatse goods set upFlag=#{upFlag} where id=#{id}
+            update goods set up_flag=#{upFlag} where id=#{id}
     </update>
 </mapper>
     

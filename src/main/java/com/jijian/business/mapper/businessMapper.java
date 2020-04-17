@@ -59,4 +59,6 @@ public interface businessMapper {
      * @return
      */
     Integer businessCount(@Param("type") String  type);
+
+    Integer updatePassword(@Param("phone") String  phone,@Param("password") String  password);
 }

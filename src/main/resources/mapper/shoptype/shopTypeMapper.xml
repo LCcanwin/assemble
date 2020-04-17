@@ -7,4 +7,8 @@
         <insert id="insertShopType" >
             insert into tbl_shop_type (shop_type_name,shop_type_number) value (#{shopTypeName},#{shopTypeNumber})
         </insert>
+
+    <select id="getAreaList" resultType="com.jijian.shoptype.entity.AreaEntity">
+              select *  from comm_area  where parent_code='511600'
+        </select>
     </mapper>

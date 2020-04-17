@@ -14,22 +14,29 @@ import org.springframework.web.bind.annotation.*;
  * Content:
  */
 @RestController
+@RequestMapping("/business/api")
 public class businessController {
     @Autowired private businessService businessService;
 
-    @RequestMapping("/addBusiness")
-    @ResponseBody
-    public ResultJson insertBusiness(@RequestBody businessEntity business){
-          business.setDeleted(0);
-          int status = businessService.addAttestation(business);
-          if(status>0){
-              return  ResultJson.getReturnJson(200,"添加成功!",business.getId());
-          } else {
-              return  ResultJson.getReturnJson(400,"添加失败!",null);
-          }
-    }
+//    @RequestMapping("/addBusiness")
+//    @ResponseBody
+//    public ResultJson insertBusiness(@RequestBody businessEntity business){
+//          business.setDeleted(0);
+//          int status = businessService.addAttestation(business);
+//          if(status>0){
+//              return  ResultJson.getReturnJson(200,"添加成功!",business.getId());
+//          } else {
+//              return  ResultJson.getReturnJson(400,"添加失败!",null);
+//          }
+//    }
 
-    @RequestMapping(value = "/businessAttestation",method = RequestMethod.PUT)
+
+    /**
+     * 商家认证
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/businessAttestation/{id}",method = RequestMethod.PUT)
     @ResponseBody
     public ResultJson businessAttestation(@RequestBody AttestationRequest request){
         businessService.businessAttestation(request);

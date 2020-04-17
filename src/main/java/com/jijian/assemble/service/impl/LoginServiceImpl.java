@@ -47,7 +47,6 @@ public class LoginServiceImpl implements LoginService {
      * @return
      */
     @Override
-
     @Transactional
     public UserInfoDTO register(String phone, String password,String type,String area) {
         String md5Password = MD5Util.getMD5(password);
@@ -68,10 +67,12 @@ public class LoginServiceImpl implements LoginService {
         businessEntity.setAttestationFlag(1);
         //未审核
         businessEntity.setStatus(1);
-        businessEntity.setType(Integer.valueOf(type));
+//        businessEntity.setType(Integer.valueOf(type));
         businessEntity.setArea(area);
         businessEntity.setDeleted(0);
         businessMapper.addBusiness(businessEntity);
+
+
 
         return userInfoDTO;
     }
@@ -85,7 +86,7 @@ public class LoginServiceImpl implements LoginService {
     public UserInfoDTO loginByPassword(String phone, String password) {
         String md5Password = MD5Util.getMD5(password);
         String resultPassword = userMapper.getPassword(phone);
-        if (resultPassword.equals(md5Password)) {
+        if (resultPassword!=null&&resultPassword.equals(md5Password)) {
             return userMapper.getUserInfo(phone);
         } else {
             return null;
@@ -103,8 +104,12 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
+    @Transactional
     public Integer updatePassword(String phone, String password) {
         String md5Password = MD5Util.getMD5(password);
+        //修改business密码
+        businessMapper.updatePassword(phone,password);
+        //修改user密码
         return userMapper.updatePassword(phone,md5Password);
     }
 }

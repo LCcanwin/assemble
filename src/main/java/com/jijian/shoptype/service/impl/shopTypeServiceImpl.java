@@ -1,6 +1,7 @@
 package com.jijian.shoptype.service.impl;
 
 import com.jijian.shoptype.POJO.shoptypePOJO;
+import com.jijian.shoptype.entity.AreaEntity;
 import com.jijian.shoptype.entity.shoptypeEntity;
 import com.jijian.shoptype.mapper.shopTypeMapper;
 import com.jijian.shoptype.service.shopTypeService;
@@ -21,5 +22,10 @@ public class shopTypeServiceImpl implements shopTypeService {
     @Override
     public List<shoptypePOJO> searchShopType() {
         return shoptypeMapper.selectShopType();
+    }
+
+    @Override
+    public List<AreaEntity> getAreaList() {
+        return shoptypeMapper.getAreaList();
     }
 }

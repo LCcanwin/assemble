@@ -7,6 +7,8 @@ import com.jijian.common.ResultJson;
 import com.jijian.assemble.doc.LoginControllerDoc;
 import com.jijian.assemble.dto.UserInfoDTO;
 import com.jijian.assemble.service.LoginService;
+import com.jijian.utils.RedisUtils;
+import com.jijian.utils.StringUtil;
 import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,13 +33,23 @@ public class LoginController implements LoginControllerDoc {
 
     @Autowired
     private businessService businessService;
+
+    @Autowired
+    private RedisUtils redisUtils;
     
 
     @RequestMapping(value = "/getVerifyCode", method = RequestMethod.GET)
     public ResultJson<Boolean> getVerifyCode(@RequestParam(value = "phone", required = true) String phone, HttpServletRequest request) {
+
+        if(redisUtils.hasKey(Constant.VERIFY_CODE)){
+            redisUtils.del(Constant.VERIFY_CODE);
+        }
+
         int verifyCode = (int) ((Math.random() * 9 + 1) * 100000);
         HttpSession session = request.getSession();
         session.setAttribute(Constant.VERIFY_CODE, verifyCode);
+        redisUtils.set(Constant.VERIFY_CODE, verifyCode);
+
         int result = loginService.getVerifyCode(phone, verifyCode);
         if (result > 0) {
             return ResultJson.getReturnJson("验证码发送成功！", true);
@@ -53,11 +65,11 @@ public class LoginController implements LoginControllerDoc {
                                          @RequestParam(value = "loginType") Integer loginType, HttpServletRequest request) {
         if (loginType == 1) {
             UserInfoDTO userInfo = loginService.loginByPassword(phone, password);
-            businessEntity businessEntity=businessService.get(String.valueOf(userInfo.getUserId()));
-            if (businessEntity == null) {
-                return ResultJson.getReturnJson("密码错误！", null);
-            } else {
+            if(userInfo!=null){
+                businessEntity businessEntity=businessService.get(String.valueOf(userInfo.getUserId()));
                 return ResultJson.getReturnJson(businessEntity);
+            }else{
+                return ResultJson.getReturnJson("密码错误！", null);
             }
         } else {
             HttpSession session = request.getSession();
@@ -92,8 +104,8 @@ public class LoginController implements LoginControllerDoc {
                                             @RequestParam(value = "area", required = false) String area ,
                                             HttpServletRequest request) {
         HttpSession session = request.getSession();
-        Object sessionCode = session.getAttribute(Constant.VERIFY_CODE);
-        if (code.equals(String.valueOf(sessionCode))) {
+        String redisCode= String.valueOf(redisUtils.get(Constant.VERIFY_CODE));
+        if (code.equals(String.valueOf(redisCode))) {
             if (loginService.isRegister(phone)) {
                 UserInfoDTO user=  loginService.register(phone, password,type,area);
                 return ResultJson.getReturnJson(user);
@@ -106,17 +118,25 @@ public class LoginController implements LoginControllerDoc {
     }
 
 
+
+
     /**
      * 修改密码
      * @param phone
      * @param password
      * @return
      */
-    @RequestMapping(value = "/updatePassword",method = RequestMethod.PUT)
-    public  ResultJson<Boolean> updatePassword(@RequestParam("phone") String phone,@RequestParam("password") String password){
-        if(loginService.updatePassword(phone,password)>0){
-            return ResultJson.getReturnJson("修改成功", true);
-        }else
-            return ResultJson.getReturnJson("修改失败", false);
+    @RequestMapping(value = "/updatePassword")
+    public  ResultJson<Boolean> updatePassword(@RequestParam("phone") String phone,@RequestParam("password") String password,@RequestParam("code") String code){
+        String redisCode= String.valueOf(redisUtils.get(Constant.VERIFY_CODE));
+        if(code.equals(redisCode)){
+            if(loginService.updatePassword(phone,password)>0){
+                return ResultJson.getReturnJson("修改成功", true);
+            }else
+                return ResultJson.getReturnJson("修改失败", false);
+        }else{
+            return ResultJson.getReturnJson("验证码错误", false);
+        }
+
     }
 }
