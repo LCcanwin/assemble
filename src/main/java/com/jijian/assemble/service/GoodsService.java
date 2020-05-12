@@ -1,5 +1,6 @@
 package com.jijian.assemble.service;
 
+import com.jijian.assemble.dto.GoodsDTO;
 import com.jijian.assemble.entity.Goods;
 import io.swagger.models.auth.In;
 
@@ -14,6 +15,7 @@ public interface GoodsService {
     Integer delete(String id);
     List<Goods> findList(Goods goods);
     List<Goods> findAllList();
+    List<GoodsDTO> findGoodsBySalesFlag(String salesFlag);
     Goods getById(String id);
     Map<String,List<Goods>> findByBusiness(String businessId);
 }

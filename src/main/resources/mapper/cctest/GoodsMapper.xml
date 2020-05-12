@@ -18,7 +18,29 @@
         <result column="returnsFlag" property="returnsFlag" />
         <result column="flag" property="flag" />
         <result column="up_flag" property="upFlag"/>
+        <result column="sales_flag" property="salesFlag"/>
+    </resultMap>
 
+
+    <resultMap id="goodsDtoInfo" type="com.jijian.assemble.dto.GoodsDTO" >
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="img" property="img" />
+        <result column="price" property="price" />
+        <result column="discount" property="discount" />
+        <result column="type" property="type" />
+        <result column="unit_price" property="unitPrice" />
+        <result column="busines_id" property="businesId" />
+        <result column="goods_number" property="goodsNumber" />
+
+        <result column="specification" property="specification" />
+
+        <result column="readyFlag" property="readyFlag" />
+        <result column="deliveryDate" property="deliveryDate" />
+        <result column="returnsFlag" property="returnsFlag" />
+        <result column="flag" property="flag" />
+        <result column="up_flag" property="upFlag"/>
+        <result column="sales_flag" property="salesFlag"/>
     </resultMap>
 
     <sql id="goodsColumn">
@@ -36,7 +58,8 @@
         g.deliveryDate,
         g.returnsFlag,
         g.flag,
-        g.up_flag
+        g.up_flag,
+        g.sales_flag
     </sql>
 
     <select id="findAllList" resultMap="goodsInfo">
@@ -50,6 +73,43 @@
     <select id="findByBusiness" resultMap="goodsInfo">
         select <include refid="goodsColumn"/> from goods g where busines_id=#{businesId}
     </select>
+
+
+    <select id="findGoodsBySalesFlag" resultMap="goodsDtoInfo">
+        select <include refid="goodsColumn"/> from goods g where g.sales_flag=#{salesFlag}
+    </select>
+
+    <select id="findList" resultMap="goodsDtoInfo">
+        select
+         g.id,
+        g.name,
+        g.img,
+        g.price,
+        g.discount,
+        g.type,
+        b.name as busines_id,
+
+        g.goods_number,
+        g.unit_price,
+        g.specification,
+        g.readyFlag,
+        g.deliveryDate,
+        g.returnsFlag,
+        g.flag,
+        case g.up_flag
+         when '0' then '是'
+         else '否' end as up_flag,
+        case g.sales_flag
+         when '0' then '正常商品'
+         when '1' then '限时促销'
+         else '今日好物' end as sales_flag
+
+         from goods g
+         left join tbl_business b on g.busines_id=b.id
+    </select>
+
+
+
     <update id="update">
      update goods set
      name=#{name},
@@ -76,7 +136,42 @@
 
 
     <select id="getById" parameterType="string" resultMap="goodsInfo">
-        select  <include refid="goodsColumn"/> from goods g where id=#{id}
+          select
+         g.id,
+        g.name,
+        g.img,
+        g.price,
+        g.discount,
+        g.type,
+        g.busines_id as busines_id,
+
+        g.goods_number,
+        g.unit_price,
+        g.specification,
+
+         case g.readyFlag
+         when '0' then '是'
+         else '否' end as readyFlag,
+          case g.returnsFlag
+         when '0' then '是'
+         else '否' end as returnsFlag,
+          case g.flag
+         when '0' then '是'
+         else '否' end as flag,
+
+
+        g.deliveryDate,
+
+        case g.up_flag
+         when '0' then '是'
+         else '否' end as up_flag,
+        case g.sales_flag
+         when '0' then '正常商品'
+         when '1' then '限时促销'
+         else '今日好物' end as sales_flag
+         from goods g
+         left join tbl_business b on g.busines_id=b.id
+         where g.id=#{id}
     </select>
 
     <update id="delete">
@@ -86,5 +181,7 @@
     <update id="upGoods">
             update goods set up_flag=#{upFlag} where id=#{id}
     </update>
+
+
 </mapper>
     

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jijian.client.mapper.CustomerMapper">
+
+    <resultMap id="customerResult" type="com.jijian.client.Dto.CustomerDTO">
+            <id column="id" property="id"/>
+             <result column="name" property="name"/>
+             <result column="password" property="password"/>
+             <result column="nick_name" property="nickName"/>
+             <result column="img" property="img"/>
+             <result column="phone" property="phone"/>
+             <result column="birthday" property="birthday"/>
+             <result column="focus_num" property="focusNum"/>
+             <result column="fans_num" property="fansNum"/>
+             <result column="red_num" property="redNum"/>
+             <result column="role" property="role"/>
+    </resultMap>
+
+    <insert id="addCustomer">
+        insert into tbl_customer(name,password,nick_name,img,phone,birthday,focus_num,fans_num,red_num,role,create_date,update_date,deleted)values
+        (#{name},#{password},#{nickName},#{img},#{phone},#{birthday},#{focusNum},#{fansNum},#{redNum},#{role},now(),now(),0)
+    </insert>
+
+    <update id="updatePhone">
+        update tbl_customer set phone=#{phone} where id=#{id}
+    </update>
+
+
+</mapper>

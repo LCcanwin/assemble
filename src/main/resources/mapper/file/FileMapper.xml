@@ -24,7 +24,7 @@
             select * from tbl_file where b_id=#{bid} and file_type=#{type}
         </select>
 
-        <select id="getFileByGoodsIdAndBusinessId" resultType="com.jijian.file.entity.FileEntity">
+        <select id="getFileByGoodsIdAndBusinessId" resultMap="fileResult">
             select * from tbl_file where b_id=#{bid} and goods_id=#{goodsId}
         </select>
 

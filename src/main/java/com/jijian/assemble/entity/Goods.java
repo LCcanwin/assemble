@@ -66,6 +66,9 @@ public class Goods  extends  BaseEntity {
     @Column(name = "up_flag",type = MySqlTypeConstant.CHAR,length = 1)
     private String upFlag;
 
+    //出售状态 0正常 1限时促销  2今日好物
+    @Column(name = "sales_flag",type = MySqlTypeConstant.CHAR,length = 1)
+    private String salesFlag;
 
     private List<FileEntity> fileEntityList;
 

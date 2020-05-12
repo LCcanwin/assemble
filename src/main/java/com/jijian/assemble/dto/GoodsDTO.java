@@ -49,4 +49,7 @@ public class GoodsDTO implements Serializable {
     private String flag;
     @ApiModelProperty("是否上架")
     private String upFlag;
+    @ApiModelProperty("出售状态 0正常 1限时促销  2发现好物 3今日推荐")
+    private String salesFlag;
+
 }

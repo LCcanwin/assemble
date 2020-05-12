@@ -1,6 +1,7 @@
 package com.jijian.assemble.mapper;
 
 
+import com.jijian.assemble.dto.GoodsDTO;
 import com.jijian.assemble.entity.Goods;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -20,4 +21,6 @@ public interface GoodsMapper {
     List<Goods> findByBusiness(String businessId);
     List<Goods> findAllList();
     Goods getById(String id);
+
+    List<GoodsDTO> findGoodsBySalesFlag(String salesFlag);
 }

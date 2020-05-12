@@ -1,5 +1,6 @@
 package com.jijian.assemble.service.impl;
 
+import com.jijian.assemble.dto.GoodsDTO;
 import com.jijian.assemble.entity.Goods;
 import com.jijian.assemble.mapper.GoodsMapper;
 import com.jijian.assemble.mapper.UserMapper;
@@ -54,6 +55,20 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public List<Goods> findAllList() {
         return goodsMapper.findAllList();
+    }
+
+    @Override
+    public List<GoodsDTO> findGoodsBySalesFlag(String salesFlag) {
+        List<GoodsDTO> goodsDTOS= goodsMapper.findGoodsBySalesFlag(salesFlag);
+
+        for(GoodsDTO goods:goodsDTOS){
+            //设置商品主图片路径
+            List<FileEntity> fileEntityList=fileMapper.getFileByGoodsIdAndBusinessIdAndFlag(String.valueOf(goods.getBusinesId()),goods.getId(),"0");
+            if(fileEntityList.size()>0){
+                goods.setImg(fileEntityList.get(0).getFileUrl());
+            }
+        }
+        return goodsDTOS;
     }
 
     @Override
