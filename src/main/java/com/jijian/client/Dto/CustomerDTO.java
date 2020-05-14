@@ -36,6 +36,8 @@ public class CustomerDTO implements Serializable {
     private Integer redNum;
     @ApiModelProperty("角色")
     private String role;
+    @ApiModelProperty("是否设置密码 0-是 1-否")
+    private String passwordFlag;
 
 
 

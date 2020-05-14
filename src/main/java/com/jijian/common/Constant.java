@@ -8,5 +8,7 @@ package com.jijian.common;
 public final class Constant {
     public static final String VERIFY_CODE="verifyCode";
 //    public static final String IMAGE_PATH="D:/manage/image/";
+//    public static final String IMAGE_DefAULT="D:/manage/image/default_head.jpg";
+    public static final String IMAGE_DefAULT="/data/image/default_head.jpg";
     public static final String IMAGE_PATH="/data/image";
 }

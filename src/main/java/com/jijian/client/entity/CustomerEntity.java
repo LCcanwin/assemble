@@ -32,7 +32,9 @@ public class CustomerEntity  extends BaseEntity {
     private Integer fansNum;
     @Column(name = "red_num",type = MySqlTypeConstant.INT,length = 64)
     private Integer redNum;
-    @Column(name = "role",type = MySqlTypeConstant.DATE,length = 64)
+    @Column(name = "role",type = MySqlTypeConstant.VARCHAR,length = 64)
     private String role;
+    @Column(name = "password_flag",type = MySqlTypeConstant.VARCHAR,length = 64)
+    private String passwordFlag;
 
 }
