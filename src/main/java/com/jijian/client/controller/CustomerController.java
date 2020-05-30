@@ -6,6 +6,8 @@ import com.jijian.client.entity.CustomerEntity;
 import com.jijian.client.service.CustomerService;
 import com.jijian.common.Constant;
 import com.jijian.common.ResultJson;
+import com.jijian.utils.DateTimeUtil;
+import com.jijian.utils.ExpireBean;
 import com.jijian.utils.RedisUtils;
 import com.jijian.utils.StringUtil;
 import io.swagger.annotations.Api;
@@ -22,7 +24,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 @Api(description = "前台用户相关接口")
@@ -35,6 +39,7 @@ public class CustomerController {
 
     @Autowired
     private RedisUtils redisUtils;
+
 
 
 //    public ResultJson<CustomerDTO> login(){
@@ -86,6 +91,13 @@ public class CustomerController {
     @ResponseBody
     public ResultJson<CustomerDTO> loginByPassword(String phone, String password) {
 
+//        if(redisUtils.hasKey(Constant.LOGIN_READY)){
+//            List<String> loginPhones=new ArrayList<>();
+//            redisUtils.set(Constant.LOGIN_READY,loginPhones);
+//        }
+
+
+
         CustomerDTO validate = customerService.getByPhone(phone);
         if (validate == null) {
             return ResultJson.getReturnJson(500, "登录失败,该账户没有注册,请使用短信登录！", null);
@@ -96,6 +108,16 @@ public class CustomerController {
 
         CustomerDTO customerDTO = customerService.loginByPassword(phone, password);
         if (customerDTO != null) {
+
+//
+//
+//            List<String> ready=(List<String>)redisUtils.get(Constant.LOGIN_READY);
+//            if(ready.contains(customerDTO.getPhone())){
+//                return ResultJson.getReturnJson(500, "登录失败,改用户已经登录!", null);
+//            }else{
+//                redisUtils.addToListRight(Constant.LOGIN_READY, expireEnum,customerDTO.getPhone());
+//            }
+
             return ResultJson.getReturnJson(200, "登录成功！", customerDTO);
         } else {
             return ResultJson.getReturnJson(500, "登录失败,用户名或密码错误！", null);
@@ -124,6 +146,10 @@ public class CustomerController {
                     register.setImg(Constant.IMAGE_DefAULT);
                     register.setPhone(phone);
                     register.setPasswordFlag("1");
+                    register.setBirthday(new Date());
+                    register.setFansNum(0);
+                    register.setFocusNum(0);
+                    register.setRedNum(0);
                     customerService.addCustomer(register);
 
                     CustomerDTO result = customerService.getByPhone(phone);
@@ -144,11 +170,14 @@ public class CustomerController {
     @ApiOperation(value = "更换头像", notes = "更换头像")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "用户id", paramType = "query", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "file", value = "头像", paramType = "query", required = true, dataType = "String")
+            @ApiImplicitParam(name = "file", value = "头像", paramType = "query", required = true, dataType = "file")
     })
     @RequestMapping(value = "/updateHead", method = RequestMethod.PUT)
     @ResponseBody
     public ResultJson<Boolean> updateHead(String id, MultipartFile file) {
+        if(file==null){
+            return ResultJson.getReturnJson(200, "上传失败，文件为空！", false);
+        }
 
         // 获取上传文件名
         String uploadPathName = file.getOriginalFilename();
@@ -185,9 +214,9 @@ public class CustomerController {
             @ApiImplicitParam(name = "id", value = "用户id", paramType = "query", required = true, dataType = "String"),
             @ApiImplicitParam(name = "password", value = "新密码", paramType = "query", required = true, dataType = "String")
     })
-    @RequestMapping(value = "/updatePassword", method = RequestMethod.PUT)
+    @RequestMapping(value = "/setPassword", method = RequestMethod.PUT)
     @ResponseBody
-    public ResultJson<Boolean> updatePassword(String id, String password) {
+    public ResultJson<Boolean> setPassword(String id, String password) {
         CustomerEntity customerEntity=new CustomerEntity();
         customerEntity.setId(Integer.valueOf(id));
         customerEntity.setPassword(password);
@@ -204,15 +233,16 @@ public class CustomerController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "用户id", paramType = "query", required = true, dataType = "String"),
             @ApiImplicitParam(name = "nickName", value = "昵称", paramType = "query", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "birthday", value = "生日", paramType = "query", required = true, dataType = "Date")
+            @ApiImplicitParam(name = "birthday", value = "生日(yyyy-MM-dd)", paramType = "query", required = true, dataType = "String")
     })
     @RequestMapping(value = "/updateNickNameAndBirthday", method = RequestMethod.PUT)
     @ResponseBody
-    public ResultJson<Boolean> updateNickNameAndBirthday(String id, String nickName,Date birthday) {
+    public ResultJson<Boolean> updateNickNameAndBirthday(String id, String nickName,String birthday) {
+
         CustomerEntity customerEntity=new CustomerEntity();
         customerEntity.setId(Integer.valueOf(id));
         customerEntity.setNickName(nickName);
-        customerEntity.setBirthday(birthday);
+        customerEntity.setBirthday(DateTimeUtil.strToDate("yyyy-MM-dd",birthday));
         if (customerService.update(customerEntity) > 0) {
             return ResultJson.getReturnJson(200, "修改成功！", true);
         } else {
@@ -230,5 +260,56 @@ public class CustomerController {
     public ResultJson<CustomerDTO> get(String id) {
         CustomerDTO customerDTO=customerService.get(id);
         return ResultJson.getReturnJson(200, "查询成功！", customerDTO);
+    }
+
+
+    @ApiOperation(value = "修改密码", notes = "修改密码")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "用户id", paramType = "query", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "oldPassword", value = "原始密码", paramType = "query", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "newPassword", value = "新密码", paramType = "query", required = true, dataType = "String")
+    })
+    @RequestMapping(value = "/updatePassword", method = RequestMethod.PUT)
+    @ResponseBody
+    public ResultJson<Boolean> updatePassword(String id,String oldPassword,String newPassword) {
+
+        CustomerDTO entity=customerService.get(id);
+
+        if(entity!=null && !entity.getPassword().equals(oldPassword)){
+            return ResultJson.getReturnJson(500, "原密码不正确，请重新输入！", false);
+        }
+        CustomerEntity customerEntity=new CustomerEntity();
+        customerEntity.setId(Integer.valueOf(id));
+        customerEntity.setPassword(newPassword);
+        if (customerService.update(customerEntity) > 0) {
+            return ResultJson.getReturnJson(200, "修改成功！", true);
+        } else {
+            return ResultJson.getReturnJson(500, "修改失败！", false);
+        }
+    }
+
+
+    @ApiOperation(value = "忘记密码", notes = "忘记密码")
+    @ApiImplicitParams({
+
+            @ApiImplicitParam(name = "phone", value = "电话号码", paramType = "query", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "password", value = "新密码", paramType = "query", required = true, dataType = "String")
+    })
+    @RequestMapping(value = "/forgetPassword", method = RequestMethod.PUT)
+    @ResponseBody
+    public ResultJson<Boolean> forgetPassword(String phone,String password) {
+
+        CustomerDTO entity=customerService.getByPhone(phone);
+        if(entity==null ){
+            return ResultJson.getReturnJson(500, "该用户未注册，请先注册！", false);
+        }
+        CustomerEntity customerEntity=new CustomerEntity();
+        customerEntity.setId(Integer.valueOf(entity.getId()));
+        customerEntity.setPassword(password);
+        if (customerService.update(customerEntity) > 0) {
+            return ResultJson.getReturnJson(200, "新密码设置成功！", true);
+        } else {
+            return ResultJson.getReturnJson(500, "密码设置失败！", false);
+        }
     }
 }

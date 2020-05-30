@@ -126,7 +126,7 @@ public class GoodsController {
      * @param businessId
      * @return
      */
-    @RequestMapping(value = "/ /{businessId}" ,method = RequestMethod.GET)
+    @RequestMapping(value = "/findByBusiness/{businessId}" ,method = RequestMethod.GET)
     public Map<String,List<Goods>> findByBusiness(@PathVariable("businessId") String businessId) {
         Map<String,List<Goods>> result = goodsService.findByBusiness(businessId);
         return result;

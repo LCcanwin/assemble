@@ -16,7 +16,7 @@ spring:
       cache: false
     datasource:
         name: test
-        url: jdbc:mysql://118.24.73.238:3306/funnyContent?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=UTC
+        url: jdbc:mysql://118.24.73.238:3306/funnyContent?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
         username: molin
         password: 123456
         # 使用druid数据源
@@ -37,10 +37,14 @@ spring:
         maxOpenPreparedStatements: 20
     mvc:
       static-path-pattern: /**
+    http:
+      encoding:
+        charset:
 # redis 配置
 redis:
   database: 0
-  host: 127.0.0.1
+  host: 49.233.175.111
+#  host: 127.0.0.1
   jedis:
     pool:
       max-active: 50
@@ -68,4 +72,5 @@ pagehelper:
     supportMethodsArguments: true
     params: count=countSql
     returnPageInfo: check
+
 

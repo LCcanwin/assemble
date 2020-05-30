@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jijian.client.mapper.PinkMapper">
+
+    <resultMap id="pinkResult" type="com.jijian.client.Dto.PinkDTO">
+        <id column="id" property="id"/>
+        <result column="pink_num" property="pinkNum"/>
+        <result column="head_id" property="headId"/>
+        <result column="head_order_id" property="headOrderId"/>
+        <result column="join_id" property="joinId"/>
+        <result column="join_order_id" property="joinOrderId"/>
+        <result column="goods_id" property="goodsId"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <resultMap id="pinkResultDetail" type="com.jijian.client.Dto.PinkDTO">
+        <id column="id" property="id"/>
+        <result column="pink_num" property="pinkNum"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="status" property="status"/>
+        <association property="head" javaType="com.jijian.client.Dto.CustomerDTO">
+            <id column="hId" property="id"/>
+            <result column="hName" property="name"/>
+            <result column="hNickName" property="nickName"/>
+            <result column="hImg" property="img"/>
+        </association>
+        <association property="headOrder" javaType="com.jijian.client.Dto.OrderDTO">
+            <id column="hoId" property="id"/>
+            <result column="hoOrderNumber" property="orderNumber"/>
+            <result column="hoTotalNum" property="totalNum"/>
+            <result column="hoTotalPrice" property="totalPrice"/>
+            <result column="hoPayPrice" property="payPrice"/>
+            <result column="hoPaid" property="paid"/>
+            <result column="hoPayTime" property="payTime"/>
+            <result column="hoPayType" property="payType"/>
+            <result column="hoStatus" property="status"/>
+            <result column="hoEvaluate" property="evaluate"/>
+            <result column="hoMark" property="mark"/>
+            <result column="hoPinkFlag" property="pinkFlag"/>
+        </association>
+        <association property="join" javaType="com.jijian.client.Dto.CustomerDTO">
+            <id column="jId" property="id"/>
+            <result column="jName" property="name"/>
+            <result column="jNickName" property="nickName"/>
+            <result column="jImg" property="img"/>
+        </association>
+        <association property="joinOrder" javaType="com.jijian.client.Dto.OrderDTO">
+            <id column="joId" property="id"/>
+            <result column="joOrderNumber" property="orderNumber"/>
+            <result column="joTotalNum" property="totalNum"/>
+            <result column="joTotalPrice" property="totalPrice"/>
+            <result column="joPayPrice" property="payPrice"/>
+            <result column="joPaid" property="paid"/>
+            <result column="joPayTime" property="payTime"/>
+            <result column="joPayType" property="payType"/>
+            <result column="joStatus" property="status"/>
+            <result column="joEvaluate" property="evaluate"/>
+            <result column="joMark" property="mark"/>
+            <result column="joPinkFlag" property="pinkFlag"/>
+        </association>
+    </resultMap>
+
+    <select id="get" resultMap="pinkResultDetail">
+         select
+         p.id,
+         p.pink_num,
+         p.start_time,
+         p.end_time,
+         p.status,
+
+         h.id as hId,
+         h.name as hName,
+         h.nick_name as hNickName,
+         h.img as hImg,
+
+
+         ho.id as hoId,
+         ho.order_number as hoOrderNumber,
+         ho.total_num as hoTotalNum,
+         ho.total_price as hoTotalPrice,
+         ho.pay_price as hoPayPrice,
+         ho.paid as hoPaid,
+         ho.pay_time as hoPayTime,
+         ho.pay_type as hoPayType,
+         ho.status as hoStatus,
+         ho.evaluate as hoEvaluate,
+         ho.mark as hoMark,
+         ho.pink_flag as hoPinkFlag,
+
+         j.id as jId,
+         j.name as jName,
+         j.nick_name as jNickName,
+         j.img as jImg,
+
+
+         jo.id as joId,
+         jo.order_number as joOrderNumber,
+         jo.total_num as joTotalNum,
+         jo.total_price as joTotalPrice,
+         jo.pay_price as joPayPrice,
+         jo.paid as joPaid,
+         jo.pay_time as joPayTime,
+         jo.pay_type as joPayType,
+         jo.status as joStatus,
+         jo.evaluate as joEvaluate,
+         jo.mark as joMark,
+         jo.pink_flag as joPinkFlag
+
+
+         from tbl_pink p
+         left join tbl_customer h on h.id=p.head_id
+         left join tbl_order ho on ho.id=p.head_order_id
+         left join tbl_customer j on j.id=p.join_id
+         left join tbl_order jo on jo.id=p.join_order_id
+         left join goods g on g.id=p.goods_id
+         where p.id=#{id}
+    </select>
+
+    <select id="getByPinkNum" resultMap="pinkResult">
+         select * from tbl_pink where pink_num=#{pinkNum}
+    </select>
+
+    <insert id="add">
+        insert into
+        tbl_pink(id,pink_num,head_id,head_order_id,join_id,join_order_id,goods_id,start_time,end_time,status,create_date,update_date,deleted)
+        values
+        (#{id},#{pinkNum},#{headId},#{headOrderId},#{joinId},#{joinOrderId},#{goodsId},#{startTime},#{endTime},#{status},now(),now(),0)
+
+    </insert>
+
+    <select id="findPinkByCustomer" resultMap="pinkResult">
+        select * from tbl_pink where uid=#{customerId}
+    </select>
+
+    <select id="findPinkByGoodsId" resultMap="pinkResult">
+        select * from tbl_pink where goods_id=#{goodsId} and status=1
+    </select>
+
+
+    <update id="update">
+        update tbl_pink
+        <set>
+            <if test="headId!=null and headId!=''">
+                head_id=#{headId},
+            </if>
+            <if test="headOrderId!=null and headOrderId!=''">
+                head_order_id=#{headOrderId},
+            </if>
+            <if test="joinId!=null and joinId!=''">
+                join_id=#{joinId},
+            </if>
+            <if test="joinOrderId!=null and joinOrderId!=''">
+                join_order_id=#{joinOrderId},
+            </if>
+             <if test="goodsId!=null and goodsId!=''">
+                 goods_id=#{goodsId},
+            </if>
+            <if test="status!=null and status!=''">
+                status=#{status},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+</mapper>

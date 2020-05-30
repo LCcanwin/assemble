@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jijian.client.mapper.OrderMapper">
+
+    <resultMap id="orderResult" type="com.jijian.client.Dto.OrderDTO">
+        <id column="id" property="id"/>
+        <result column="order_number" property="orderNumber"/>
+        <result column="uid" property="uid"/>
+        <result column="goods_id" property="goodsId"/>
+        <result column="total_num" property="totalNum"/>
+        <result column="total_price" property="totalPrice"/>
+        <result column="pay_price" property="payPrice"/>
+        <result column="paid" property="paid"/>
+        <result column="pay_time" property="payTime"/>
+        <result column="pay_type" property="payType"/>
+        <result column="status" property="status"/>
+        <result column="evaluate" property="evaluate"/>
+        <result column="mark" property="mark"/>
+        <result column="pink_flag" property="pinkFlag"/>
+        <result column="pink_id" property="pinkId"/>
+    </resultMap>
+
+
+    <sql id="orderColumn">
+         o.id,
+         o.order_number,
+         o.uid,
+         o.goods_id,
+         o.total_num,
+         o.total_price,
+         o.pay_price,
+         o.paid,
+         o.pay_time,
+         o.pay_type,
+         o.status,
+         o.evaluate,
+         o.mark,
+         o.pink_flag,
+         o.pink_id
+    </sql>
+
+    <select id="get" resultMap="orderResult">
+         select * from tbl_order where id=#{id}
+    </select>
+
+    <select id="getByOrderNumber" resultType="com.jijian.client.Dto.OrderDTO">
+         select * from tbl_order where order_number=#{orderNum}
+    </select>
+
+    <insert id="add">
+
+        insert into
+        tbl_order(id,order_number,uid,goods_id,total_num,total_price,pay_price,paid,pay_time,pay_type,status,evaluate,mark,pink_flag,pink_id,create_date,update_date,deleted)
+        values
+         (#{id},#{orderNumber},#{uid},#{goodsId},#{totalNum},#{totalPrice},#{payPrice},#{paid},#{payTime},#{payType},0,#{evaluate},#{mark},#{pinkFlag},#{pinkId},now(),now(),0)
+
+    </insert>
+
+    <select id="findOrderByCustomer" resultMap="orderResult">
+        select * from tbl_order where uid=#{customerId}
+    </select>
+
+    <update id="update">
+        update tbl_order
+        <set>
+            <if test="status!=null and status!=''">
+                status=#{status},
+            </if>
+            <if test="mark!=null and mark!=''">
+                mark=#{mark},
+            </if>
+            <if test="pinkFlag!=null and pinkFlag!=''">
+                pink_flag=#{pinkFlag},
+            </if>
+            <if test="pinkId!=null and pinkId!=''">
+                pink_id=#{pinkId},
+            </if>
+             <if test="evaluate!=null and evaluate!=''">
+                 evaluate=#{evaluate},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+</mapper>

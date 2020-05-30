@@ -3,6 +3,9 @@ package com.jijian.assemble.dto;
 
 import com.gitee.sunchenbin.mybatis.actable.annotation.Column;
 import com.gitee.sunchenbin.mybatis.actable.constants.MySqlTypeConstant;
+import com.jijian.client.Dto.StyleDto;
+import com.jijian.client.Dto.TypeDto;
+import com.jijian.client.entity.Style;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -51,5 +54,13 @@ public class GoodsDTO implements Serializable {
     private String upFlag;
     @ApiModelProperty("出售状态 0正常 1限时促销  2发现好物 3今日推荐")
     private String salesFlag;
+    @ApiModelProperty("分类")
+    private TypeDto typeDto;
+    @ApiModelProperty("子分类")
+    private TypeDto subTypeDto;
+    @ApiModelProperty("风格")
+    private StyleDto styleDto;
+
+
 
 }

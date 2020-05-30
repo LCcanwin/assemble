@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jijian.client.mapper.AddressMapper">
+
+
+    <resultMap id="addressResult" type="com.jijian.client.Dto.AddressDTO">
+        <id column="id" property="id"/>
+        <result column="aName" property="name"/>
+        <result column="aAddress" property="address"/>
+        <result column="aPhone" property="phone"/>
+        <result column="customerId" property="customerId"/>
+        <result column="flag" property="flag"/>
+        <association property="town" javaType="com.jijian.client.Dto.RegionDTO">
+            <id column="tId" property="id"/>
+            <result column="tName" property="name"/>
+            <result column="tPid" property="pid"/>
+            <result column="tLevel" property="level"/>
+        </association>
+        <association property="city" javaType="com.jijian.client.Dto.RegionDTO">
+            <id column="cId" property="id"/>
+            <result column="cName" property="name"/>
+            <result column="cPid" property="pid"/>
+            <result column="cLevel" property="level"/>
+        </association>
+        <association property="province" javaType="com.jijian.client.Dto.RegionDTO">
+            <id column="pId" property="id"/>
+            <result column="pName" property="name"/>
+            <result column="pPid" property="pid"/>
+            <result column="pLevel" property="level"/>
+        </association>
+    </resultMap>
+
+
+    <resultMap id="areaResult" type="com.jijian.client.Dto.Province">
+
+            <id column="pId" property="id"/>
+            <result column="pName" property="name"/>
+            <result column="pPid" property="pid"/>
+            <result column="pLevel" property="level"/>
+
+        <collection property="cities" ofType="com.jijian.client.Dto.City">
+            <id column="cId" property="id"/>
+                <result column="cName" property="name"/>
+                <result column="cPid" property="pid"/>
+                <result column="cLevel" property="level"/>
+            <collection property="towns" ofType="com.jijian.client.Dto.RegionDTO">
+                <id column="tId" property="id"/>
+                <result column="tName" property="name"/>
+                <result column="tPid" property="pid"/>
+                <result column="tLevel" property="level"/>
+            </collection>
+        </collection>
+
+    </resultMap>
+
+    <select id="getListByCustomerId"  resultMap="addressResult">
+        select
+            a.id,
+            a.name as aName,
+            a.address as aAddress,
+            a.phone as aPhone,
+            a.customer_id,
+            a.flag,
+
+            t.id as tId,
+            t.name as tName,
+            t.pid as tPid,
+            t.level as tLevel,
+
+            c.id as cId,
+            c.name as cName,
+            c.pid as cPid,
+            c.level as cLevel,
+
+            p.id as pId,
+            p.name as pName,
+            p.pid as pPid,
+            p.level as pLevel
+
+            from tbl_address a
+            left join tbl_region t on t.id=a.town_id
+            left join tbl_region c on c.id=a.city_id
+            left join tbl_region p on p.id=a.province_id
+            where customer_id=#{customerId} and deleted =0
+    </select>
+
+    <insert id="add">
+        insert into tbl_address(id,name,address,phone,town_id,city_id,province_id,customer_id,flag,create_date,update_date,deleted)values
+        (#{id},#{name},#{address},#{phone},#{townId},#{cityId},#{provinceId},#{customerId},#{flag},now(),now(),0)
+    </insert>
+
+    <update id="delete">
+        update tbl_address set deleted=1 where id=#{id}
+    </update>
+
+    <update id="update">
+        update tbl_address
+        <set>
+            <if test="name!=null and name!=''">
+                name=#{name},
+            </if>
+             <if test="address!=null and address!=''">
+                 address=#{address},
+            </if>
+            <if test="phone!=null and phone!=''">
+                 phone=#{phone},
+            </if>
+             <if test="provinceId!=null and provinceId!=''">
+                 province_id=#{provinceId},
+            </if>
+             <if test="cityId!=null and cityId!=''">
+                 city_id=#{cityId},
+            </if>
+             <if test="townId!=null and townId!=''">
+                 town_id=#{townId},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <update id="setDefault">
+        update tbl_address set flag=0 where id=#{id};
+    </update>
+    <update id="canalDefault">
+        update tbl_address set flag=1 where id=#{id};
+    </update>
+
+    <update id="canalDefaultByCustomerId">
+        update tbl_address set flag=1 where customer_id=#{customerId};
+    </update>
+
+    <select id="findCountByCustomerId" resultType="java.lang.Integer">
+        select count(*) from tbl_address where deleted =0 and customer_id=#{customerId};
+    </select>
+
+
+    <select id="findRegionByPid" resultType="com.jijian.client.Dto.RegionDTO">
+        select * from tbl_region
+        <choose>
+            <when test="pId!=null and pId!=''">
+                where pid=#{pId}
+            </when>
+            <otherwise>
+                where level=1
+            </otherwise>
+        </choose>
+    </select>
+
+
+    <select id="findAllRegion" resultMap="areaResult">
+         select
+            p.id as pId,
+            p.name as pName,
+            p.pid as pPid,
+            p.level as pLevel,
+
+            c.id as cId,
+            c.name as cName,
+            c.pid as cPid,
+            c.level as cLevel,
+
+            t.id as tId,
+            t.name as tName,
+            t.pid as tPid,
+            t.level as tLevel
+
+
+            from  tbl_region p
+            inner join tbl_region c on c.pid=p.id
+            inner join tbl_region t on t.pid=c.id
+            where p.level!='0'
+
+    </select>
+</mapper>

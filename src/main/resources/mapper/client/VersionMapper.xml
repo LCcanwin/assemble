@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jijian.client.mapper.VersionMapper">
+
+
+    <insert id="add">
+        insert into tbl_version(id,name,number,message,url,flag,create_date,update_date,deleted)values
+        (#{id},#{name},#{number},#{message},#{url},#{flag},now(),now(),0)
+    </insert>
+    
+    <select id="getLastVersion" resultType="com.jijian.client.Dto.VersionDTO">
+        select * from tbl_version where number>#{number} order by create_date desc limit 1
+    </select>
+
+    <select id="findList" resultType="com.jijian.client.Dto.VersionDTO">
+        select * from tbl_version where deleted=0
+    </select>
+
+    <update id="update">
+        update tbl_version
+        <set>
+            <if test="name!=null and name!=''">
+                name=#{name},
+            </if>
+            <if test="message!=null and message!=''">
+                message=#{message},
+            </if>
+            <if test="url!=null and url!=''">
+                url=#{url},
+            </if>
+            <if test="flag!=null and flag!=''">
+                flag=#{flag},
+            </if>
+            <if test="number!=null">
+                number=#{number},
+            </if>
+            where id=#{id}
+        </set>
+    </update>
+
+    <update id="delete">
+        update tbl_version set deleted=1 where id=#{id}
+    </update>
+</mapper>

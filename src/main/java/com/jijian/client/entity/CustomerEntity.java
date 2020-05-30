@@ -7,8 +7,10 @@ import com.gitee.sunchenbin.mybatis.actable.constants.MySqlTypeConstant;
 import com.jijian.base.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -37,4 +39,6 @@ public class CustomerEntity  extends BaseEntity {
     @Column(name = "password_flag",type = MySqlTypeConstant.VARCHAR,length = 64)
     private String passwordFlag;
 
+
+    private List<Address> addressList;
 }

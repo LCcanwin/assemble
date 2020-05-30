@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jijian.client.mapper.TypeMapper">
+
+    <resultMap id="typeResult" type="com.jijian.client.Dto.TypeDto">
+            <id column="tId" property="id"/>
+            <result column="tName" property="name"/>
+            <result column="tParentId" property="parentId"/>
+            <result column="tStyleFlag" property="styleFlag"/>
+            <collection property="subTypeList" ofType="com.jijian.client.Dto.TypeDto">
+                <id column="sId" property="id"/>
+                <result column="sName" property="name"/>
+                <result column="sParentId" property="parentId"/>
+                <result column="sStyleFlag" property="styleFlag"/>
+            </collection>
+    </resultMap>
+
+    <select id="findList" resultMap="typeResult">
+        SELECT
+            tb.id as tId,
+            tb.name as tName,
+            tb.parent_id as tParentId,
+            tb.style_flag as tStyleFlag,
+            sub.id as sId,
+            sub.name as sName,
+            sub.parent_id as sParentId,
+            sub.style_flag as sStyleFlag
+        from tbl_type tb
+        inner join tbl_type sub on sub.parent_id=tb.id
+    </select>
+
+    <select id="findStyleList" resultType="com.jijian.client.Dto.StyleDto">
+        select * from tbl_style
+    </select>
+
+    <select id="findListByPid" resultType="com.jijian.client.Dto.StyleDto">
+        select * from tbl_type
+        <choose>
+            <when test="parentId!=null and parentId!=''">
+                where parent_id=#{parentId}
+            </when>
+            <otherwise>
+                where parent_id='0'
+            </otherwise>
+        </choose>
+    </select>
+
+</mapper>

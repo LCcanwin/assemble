@@ -70,6 +70,17 @@ public class Goods  extends  BaseEntity {
     @Column(name = "sales_flag",type = MySqlTypeConstant.CHAR,length = 1)
     private String salesFlag;
 
+
+    //类型id
+    @Column(name = "goods_type_id",type = MySqlTypeConstant.INT,length = 64)
+    private Integer goodsTypeId;
+    //子类型id
+    @Column(name = "goods_sub_type_id",type = MySqlTypeConstant.INT,length = 64)
+    private String goodsSubTypeId;
+    //风格id
+    @Column(name = "style_id",type = MySqlTypeConstant.INT,length = 64)
+    private Integer styleId;
+
     private List<FileEntity> fileEntityList;
 
 

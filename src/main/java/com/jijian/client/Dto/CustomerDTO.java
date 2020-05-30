@@ -1,12 +1,14 @@
 package com.jijian.client.Dto;
 
 
+import com.jijian.client.entity.Address;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 
 @Data
@@ -38,6 +40,8 @@ public class CustomerDTO implements Serializable {
     private String role;
     @ApiModelProperty("是否设置密码 0-是 1-否")
     private String passwordFlag;
+    @ApiModelProperty("收获地址")
+    private List<AddressDTO> addressDtoList;
 
 
 

@@ -21,6 +21,7 @@ public interface GoodsMapper {
     List<Goods> findByBusiness(String businessId);
     List<Goods> findAllList();
     Goods getById(String id);
+    GoodsDTO get(String id);
 
     List<GoodsDTO> findGoodsBySalesFlag(String salesFlag);
 }

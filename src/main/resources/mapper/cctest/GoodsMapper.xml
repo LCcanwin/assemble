@@ -1,46 +1,57 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-    <mapper namespace="com.jijian.assemble.mapper.GoodsMapper">
-    <resultMap id="goodsInfo" type="com.jijian.assemble.entity.Goods" >
-        <id column="id" property="goodsId" />
-        <result column="name" property="name" />
-        <result column="img" property="img" />
-        <result column="price" property="price" />
-        <result column="discount" property="discount" />
-        <result column="type" property="type" />
-        <result column="busines_id" property="businesId" />
-        <result column="goods_number" property="goodsNumber" />
+<mapper namespace="com.jijian.assemble.mapper.GoodsMapper">
+    <resultMap id="goodsInfo" type="com.jijian.assemble.entity.Goods">
+        <id column="id" property="goodsId"/>
+        <result column="name" property="name"/>
+        <result column="img" property="img"/>
+        <result column="price" property="price"/>
+        <result column="discount" property="discount"/>
+        <result column="type" property="type"/>
+        <result column="busines_id" property="businesId"/>
+        <result column="goods_number" property="goodsNumber"/>
 
-        <result column="specification" property="specification" />
-        <result column="unit_price" property="unitPrice" />
-        <result column="readyFlag" property="readyFlag" />
-        <result column="deliveryDate" property="deliveryDate" />
-        <result column="returnsFlag" property="returnsFlag" />
-        <result column="flag" property="flag" />
+        <result column="specification" property="specification"/>
+        <result column="unit_price" property="unitPrice"/>
+        <result column="readyFlag" property="readyFlag"/>
+        <result column="deliveryDate" property="deliveryDate"/>
+        <result column="returnsFlag" property="returnsFlag"/>
+        <result column="flag" property="flag"/>
         <result column="up_flag" property="upFlag"/>
         <result column="sales_flag" property="salesFlag"/>
     </resultMap>
 
 
-    <resultMap id="goodsDtoInfo" type="com.jijian.assemble.dto.GoodsDTO" >
-        <id column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="img" property="img" />
-        <result column="price" property="price" />
-        <result column="discount" property="discount" />
-        <result column="type" property="type" />
-        <result column="unit_price" property="unitPrice" />
-        <result column="busines_id" property="businesId" />
-        <result column="goods_number" property="goodsNumber" />
-
-        <result column="specification" property="specification" />
-
-        <result column="readyFlag" property="readyFlag" />
-        <result column="deliveryDate" property="deliveryDate" />
-        <result column="returnsFlag" property="returnsFlag" />
-        <result column="flag" property="flag" />
+    <resultMap id="goodsDtoInfo" type="com.jijian.assemble.dto.GoodsDTO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="img" property="img"/>
+        <result column="price" property="price"/>
+        <result column="discount" property="discount"/>
+        <result column="type" property="type"/>
+        <result column="unit_price" property="unitPrice"/>
+        <result column="busines_id" property="businesId"/>
+        <result column="goods_number" property="goodsNumber"/>
+        <result column="specification" property="specification"/>
+        <result column="readyFlag" property="readyFlag"/>
+        <result column="deliveryDate" property="deliveryDate"/>
+        <result column="returnsFlag" property="returnsFlag"/>
+        <result column="flag" property="flag"/>
         <result column="up_flag" property="upFlag"/>
         <result column="sales_flag" property="salesFlag"/>
+
+        <association property="typeDto" javaType="com.jijian.client.Dto.TypeDto">
+            <id column="tId" property="id"/>
+            <result column="tName" property="name"/>
+        </association>
+        <association property="subTypeDto" javaType="com.jijian.client.Dto.TypeDto">
+            <id column="stId" property="id"/>
+            <result column="stName" property="name"/>
+        </association>
+        <association property="styleDto" javaType="com.jijian.client.Dto.StyleDto">
+            <id column="sId" property="id"/>
+            <result column="sName" property="name"/>
+        </association>
     </resultMap>
 
     <sql id="goodsColumn">
@@ -71,17 +82,21 @@
 
 
     <select id="findByBusiness" resultMap="goodsInfo">
-        select <include refid="goodsColumn"/> from goods g where busines_id=#{businesId}
+        select
+        <include refid="goodsColumn"/>
+        from goods g where busines_id=#{businesId}
     </select>
 
 
     <select id="findGoodsBySalesFlag" resultMap="goodsDtoInfo">
-        select <include refid="goodsColumn"/> from goods g where g.sales_flag=#{salesFlag}
+        select
+        <include refid="goodsColumn"/>
+        from goods g where g.sales_flag=#{salesFlag}
     </select>
 
     <select id="findList" resultMap="goodsDtoInfo">
         select
-         g.id,
+        g.id,
         g.name,
         g.img,
         g.price,
@@ -102,12 +117,23 @@
         case g.sales_flag
          when '0' then '正常商品'
          when '1' then '限时促销'
-         else '今日好物' end as sales_flag
+         else '今日好物' end as sales_flag,
+
+         t.id as tId,
+         t.name as tName,
+
+         st.id as stId,
+         st.name as stName,
+
+         s.id as sId,
+         s.name as sName
 
          from goods g
          left join tbl_business b on g.busines_id=b.id
+         left join tbl_type  t on t.id=g.goods_type_id
+         left join tbl_type  st on st.id=g.goods_sub_type_id
+         left join tbl_style s on s.id=g.style_id
     </select>
-
 
 
     <update id="update">
@@ -130,14 +156,12 @@
 
 
     <insert id="addGoods">
-        insert into goods(id,name,img,price,type,discount,create_date,update_date,create_user,update_user,deleted,busines_id,goods_number,unit_price,specification,readyFlag,deliveryDate,returnsFlag,flag,clap_num,up_flag) values
-        (#{goodsId},#{name},#{img},#{price},#{type},#{discount},now(),now(),#{createUser},#{updateUser},0,#{businesId},#{goodsNumber},#{unitPrice},#{specification},#{readyFlag},#{deliveryDate},#{returnsFlag},#{flag},#{clapNum},'1')
+        insert into goods(id,name,img,price,type,discount,create_date,update_date,create_user,update_user,deleted,busines_id,goods_number,unit_price,specification,readyFlag,deliveryDate,returnsFlag,flag,clap_num,up_flag,goods_type_id,goods_sub_type_id,style_id) values
+        (#{goodsId},#{name},#{img},#{price},#{type},#{discount},now(),now(),#{createUser},#{updateUser},0,#{businesId},#{goodsNumber},#{unitPrice},#{specification},#{readyFlag},#{deliveryDate},#{returnsFlag},#{flag},#{clapNum},'1',#{goodsTypeId},#{goodsSubTypeId},#{styleId})
     </insert>
-
-
-    <select id="getById" parameterType="string" resultMap="goodsInfo">
-          select
-         g.id,
+    <select id="get" parameterType="string" resultMap="goodsDtoInfo">
+        select
+        g.id,
         g.name,
         g.img,
         g.price,
@@ -162,15 +186,84 @@
 
         g.deliveryDate,
 
+
         case g.up_flag
          when '0' then '是'
          else '否' end as up_flag,
         case g.sales_flag
          when '0' then '正常商品'
          when '1' then '限时促销'
-         else '今日好物' end as sales_flag
+         else '今日好物' end as sales_flag,
+
+         t.id as tId,
+         t.name as tName,
+
+         st.id as stId,
+         st.name as stName,
+
+         s.id as sId,
+         s.name as sName
+
+
          from goods g
          left join tbl_business b on g.busines_id=b.id
+         left join tbl_type  t on t.id=g.goods_type_id
+         left join tbl_type  st on st.id=g.goods_sub_type_id
+         left join tbl_style s on s.id=g.style_id
+         where g.id=#{id}
+    </select>
+
+    <select id="getById" parameterType="string" resultMap="goodsInfo">
+        select
+        g.id,
+        g.name,
+        g.img,
+        g.price,
+        g.discount,
+        g.type,
+        g.busines_id as busines_id,
+
+        g.goods_number,
+        g.unit_price,
+        g.specification,
+
+         case g.readyFlag
+         when '0' then '是'
+         else '否' end as readyFlag,
+          case g.returnsFlag
+         when '0' then '是'
+         else '否' end as returnsFlag,
+          case g.flag
+         when '0' then '是'
+         else '否' end as flag,
+
+
+        g.deliveryDate,
+
+
+        case g.up_flag
+         when '0' then '是'
+         else '否' end as up_flag,
+        case g.sales_flag
+         when '0' then '正常商品'
+         when '1' then '限时促销'
+         else '今日好物' end as sales_flag,
+
+         t.id as tId,
+         t.name as tName,
+
+         st.id as stId,
+         st.name as stName,
+
+         s.id as sId,
+         s.name as sName
+
+
+         from goods g
+         left join tbl_business b on g.busines_id=b.id
+         left join tbl_type  t on t.id=g.goods_type_id
+         left join tbl_type  st on st.id=g.goods_sub_type_id
+         left join tbl_style s on s.id=g.style_id
          where g.id=#{id}
     </select>
 

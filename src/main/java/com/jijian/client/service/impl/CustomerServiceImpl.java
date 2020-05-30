@@ -6,6 +6,7 @@ import com.jijian.client.Dto.CustomerDTO;
 import com.jijian.client.entity.CustomerEntity;
 import com.jijian.client.mapper.CustomerMapper;
 import com.jijian.client.service.CustomerService;
+import com.jijian.common.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +46,10 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDTO get(String id) {
-        return customerMapper.get(id);
+        CustomerDTO customerDTO=customerMapper.get(id);
+        if(customerDTO!=null){
+            customerDTO.setImg(Constant.IMAGE_VISIT_PATH+customerDTO.getImg());
+        }
+        return customerDTO;
     }
 }
